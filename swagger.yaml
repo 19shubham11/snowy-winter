@@ -1,0 +1,71 @@
+  openapi: 3.0.0
+
+  info:
+    title: url-shortener
+    description: >-
+      This is simple url-shortener that takes in a url and returns a shortened version of the same!
+    version: 0.1.0  
+
+  paths:
+    /shorten:
+      post:
+        description: Route that returns the shortened url, usually of the pattern localhost/{id}
+        requestBody:
+          required: true
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InputUrl'
+
+        responses:
+          200:
+            description: Successfully created a shortened url
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/OutputUrl'
+          400:
+            description: Bad Request
+
+    /{id}:
+      get:
+        description: Redirects to the original url if the input id is valid
+        parameters:
+          - $ref:  '#/components/parameters/id'
+        responses:
+          302:
+            description: Redirection was successful
+          404:
+            description: Given id does not exist
+
+  components:
+    parameters:
+      id:
+        name: id
+        description: The id of a shorted url returned in the post request
+        in: path
+        required: true
+        example: 1484ea43
+        schema:
+          type: string
+
+    schemas:
+      InputUrl:
+        description: Input body containing the url to be shortened
+        type: object
+        properties:
+          url:
+            type: string
+        required:
+          - url        
+        example:
+          url: http://www.google.com/
+
+      OutputUrl:
+        description: Output body containing the shortened url
+        type: object
+        properties:
+          shortenedUrl:
+            type: string
+        example:
+          shortenedUrl: "http://localhost/1484ea43"

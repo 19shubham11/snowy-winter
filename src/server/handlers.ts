@@ -1,10 +1,7 @@
-import { Request, Response } from 'express';
-import {InpRequest, OutRequest} from '../models'
-import * as hash from '../helpers/hash'
-
+import { Request, Response } from 'express'
 
 function checkHealth(_: Request, res: Response) {
-    res.send("Ok")
+    res.send("OK")
 }
 
-export {checkHealth}
+export { checkHealth }

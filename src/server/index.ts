@@ -11,5 +11,5 @@ const PORT = config.PORT
 
 
 app.listen(PORT, () => {
-    console.log( `server started at http://localhost:${ PORT }` );
+    console.log(`server started at http://localhost:${PORT}`)
 })

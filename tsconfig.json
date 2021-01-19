@@ -5,6 +5,7 @@
         "target": "es6",
         "noImplicitAny": true,
         "resolveJsonModule": true,
+        "strictNullChecks": true,
         "moduleResolution": "node",
         "outDir": "dest",
         "baseUrl": ".",

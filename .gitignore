@@ -1,0 +1,7 @@
+node_modules
+coverage
+*.sort
+npm-debug.log
+*.gz
+.DS_Store
+dest/

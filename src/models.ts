@@ -1,11 +1,11 @@
 type Hash = string
 
-interface InpRequest {
-    url : URL
+interface ShortenURLRequest {
+    url : string
 }
 
-interface OutRequest {
-    shortenedUrl: URL
+interface ShortenURLResponse {
+    shortenedUrl: string
 }
 
-export { Hash, InpRequest, OutRequest }
+export { Hash, ShortenURLRequest, ShortenURLResponse }

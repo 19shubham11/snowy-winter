@@ -13,13 +13,13 @@ const conf: RedisConfig = {
 setupRedisInstance(conf)
 const redis = getRedisInstance()
 
-afterAll((done) => {
+afterAll(async (done) => {
     redis.flushdb()
+    redis.quit()
     done()
 })
 
 import {get, set} from '../../src/store/redis'
-
 
 describe('Redis Integration tests', () => {
     it('Should return OK when setting a key', async () => {
@@ -27,10 +27,11 @@ describe('Redis Integration tests', () => {
         assert.strictEqual(val, 'OK')
     })
 
-    it('Should return the expected value when getting', async () => {
-        const key = 'k1'
-        const value = 'OutpUt'
-        await set('k1', value)
+    it('Should return the expected value when getting the value for a key', async () => {
+        const key = 'a51ac3ef'
+        const value = 'http://www.google.com'
+
+        await set(key, value)
         const res = await get(key)
 
         assert.strictEqual(res, value)

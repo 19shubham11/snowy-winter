@@ -19,11 +19,11 @@ afterAll(async (done) => {
     done()
 })
 
-import {get, set} from '../../src/store/redis'
+import * as db from '../../src/store/redis'
 
 describe('Redis Integration tests', () => {
     it('Should return OK when setting a key', async () => {
-        const val = await set('key1', 'http://www.google.com')
+        const val = await db.set('key1', 'http://www.google.com')
         assert.strictEqual(val, 'OK')
     })
 
@@ -31,14 +31,14 @@ describe('Redis Integration tests', () => {
         const key = 'a51ac3ef'
         const value = 'http://www.google.com'
 
-        await set(key, value)
-        const res = await get(key)
+        await db.set(key, value)
+        const res = await db.get(key)
 
         assert.strictEqual(res, value)
     })
 
     it('Should return null when getting a value that does not exist', async () => {
-        const res = await get('DoesNotExists')
+        const res = await db.get('DoesNotExists')
         assert.strictEqual(res, null)
     })
 })

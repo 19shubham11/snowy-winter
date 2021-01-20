@@ -1,3 +1,7 @@
+/**
+ * Routes just pass on the requests to the appropriate handlers
+ */
+
 import express from 'express'
 import { checkHealth, shortenUrl, getOriginalUrl } from './handlers'
 

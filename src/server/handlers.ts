@@ -1,3 +1,7 @@
+/**
+ * Handlers are responsible for inp/out validation, there is no "business logic" here
+ */
+
 import { Request, Response } from 'express'
 import { ShortenURLRequest, Hash} from '../models'
 import { shortenUrlController, getOriginalUrlController } from './controllers'
@@ -10,22 +14,18 @@ function checkHealth(_: Request, res: Response) {
 async function shortenUrl(req: Request, res: Response) {
     const inp = req.body as ShortenURLRequest
     if (!inp.url) {
-        res.status(400)
-        res.send("Missing required field 'url' ")
-        return
+        return res.status(400).send("Missing required field 'url' ")
     }
     if (!isValidURL(inp.url)) {
-        res.status(400)
-        res.send("Invalid URL")
-        return
+        return res.status(400).send('Invalid URL')
     }
     try {
         const appPort = req.app.get('PORT') as number
         const shortenedUrlResp = await shortenUrlController(inp.url, appPort)
         return res.json(shortenedUrlResp)
     } catch (err) {
-        console.error('Error!')
-        res.status(500)
+        console.log('Error', err)
+        return res.status(500).send('Internal Server Error')
     }
 }
 
@@ -34,10 +34,13 @@ async function getOriginalUrl(req: Request, res: Response) {
 
     try {
         const redirectUrl = await getOriginalUrlController(hash)
-        return res.redirect(redirectUrl)
+        if (redirectUrl === null) {
+            return res.status(404).send('Not Found')
+        }
+        res.redirect(redirectUrl)
     } catch(err) {
-        console.error('Error!')
-        res.status(500)
+        console.log('Error', err)
+        return res.status(500).send('Internal Server Error')
     }
 }
 

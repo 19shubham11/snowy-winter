@@ -1,20 +1,33 @@
+/**
+ * Controllers contain the main logic for the application
+ */
+
 import * as hash from '../helpers/hash'
 import { ShortenURLResponse, Hash } from '../models'
+import * as store from '../store/datastore'
 
 async function shortenUrlController(inputURL: string, port: number): Promise<ShortenURLResponse> {
+   try {
     const urlHash = hash.createUniqueHash()
-    /// saveKeyValuePairHere, if successful return else throw error
+    await store.saveURLAndKey(urlHash, inputURL)
 
     const shortenedUrl =  `http://localhost:${port}/${urlHash}`
     const shortenURLResponse : ShortenURLResponse = {
         shortenedUrl
     }
     return shortenURLResponse
+   } catch (err) {
+       throw new Error(err)
+   }
 }
 
-async function getOriginalUrlController(inpHash: Hash): Promise<string> {
-    //// get url from hash const url = /
-    return "http://www.google.com"
+async function getOriginalUrlController(inpHash: Hash): Promise < string | null > {
+    try {
+        const url = await store.getURLFromKey(inpHash)
+        return url
+    } catch (err) {
+        return err
+    }
 }
 
 export { shortenUrlController, getOriginalUrlController }

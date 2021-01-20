@@ -1,9 +1,22 @@
 import express from 'express'
+import { config } from '../config'
+import { setupRedisInstance, getRedisInstance } from '../store/setup'
+
+// redis setup
+setupRedisInstance(config.redis)
+const redisClient = getRedisInstance()
+
+redisClient.on('error', (err) => {
+    console.error('Redis Error!', err)
+})
+
+redisClient.on('connect', () => {
+    console.error('Connected to Redis!')
+})
+
+// server setup
 import bodyParser from 'body-parser'
 import { router }  from './routes'
-import { config } from '../config'
-
-import { setupRedisInstance, getRedisInstance } from '../store/setup'
 
 const app = express()
 app.use(bodyParser.json())
@@ -14,12 +27,4 @@ app.set('PORT', PORT)
 
 app.listen(PORT, () => {
     console.log(`server started at http://localhost:${PORT}`)
-})
-
-
-setupRedisInstance(config.redis)
-const redisClient = getRedisInstance()
-
-redisClient.on('error', (err) => {
-    console.error('Redis Error!', err)
 })

@@ -20,7 +20,8 @@ async function shortenUrl(req: Request, res: Response) {
         return
     }
     try {
-        const shortenedUrlResp = await shortenUrlController(inp.url)
+        const appPort = req.app.get('PORT') as number
+        const shortenedUrlResp = await shortenUrlController(inp.url, appPort)
         return res.json(shortenedUrlResp)
     } catch (err) {
         console.error('Error!')

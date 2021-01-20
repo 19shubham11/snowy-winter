@@ -1,13 +1,11 @@
 import * as hash from '../helpers/hash'
-import config from '../config.json'
 import { ShortenURLResponse, Hash } from '../models'
 
-
-async function shortenUrlController(inputURL: string): Promise<ShortenURLResponse> {
+async function shortenUrlController(inputURL: string, port: number): Promise<ShortenURLResponse> {
     const urlHash = hash.createUniqueHash()
     /// saveKeyValuePairHere, if successful return else throw error
 
-    const shortenedUrl =  `http://localhost:${config.PORT}/${urlHash}`
+    const shortenedUrl =  `http://localhost:${port}/${urlHash}`
     const shortenURLResponse : ShortenURLResponse = {
         shortenedUrl
     }

@@ -3,8 +3,7 @@
  * will remain the same even if db implementation changes
  */
 
-import { Hash } from "../models";
-import * as db from "./redis"
+ import * as db from "./redis"
 
 async function saveKeyAndValue(key: string, value: string): Promise <"OK"> {
     try {
@@ -14,7 +13,7 @@ async function saveKeyAndValue(key: string, value: string): Promise <"OK"> {
     }
 }
 
-async function getValueFromKey(key: string): Promise<string | null> {
+async function getValue(key: string): Promise<string | null> {
     try {
         return await db.get(key)
     } catch(err) {
@@ -22,7 +21,7 @@ async function getValueFromKey(key: string): Promise<string | null> {
     }
 }
 
-async function incrementKey(key: string): Promise<number> {
+async function incrementValue(key: string): Promise<number> {
     try {
         return await db.incr(key)
     } catch(err) {
@@ -30,4 +29,4 @@ async function incrementKey(key: string): Promise<number> {
     }
 }
 
-export { saveKeyAndValue, getValueFromKey, incrementKey }
+export { saveKeyAndValue, getValue, incrementValue }

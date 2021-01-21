@@ -3,15 +3,15 @@
  */
 
 import express from 'express'
-import { checkHealth, shortenUrl, getOriginalUrl, getURLStats } from './handlers'
+import { checkHealth, shortenURL, getOriginalURL, getURLStats } from './handlers'
 
 
 const router = express.Router()
 
 router.get("/internal/health", checkHealth)
 
-router.post("/shorten", shortenUrl)
-router.get("/:id", getOriginalUrl)
+router.post("/shorten", shortenURL)
+router.get("/:id", getOriginalURL)
 router.get("/:id/stats", getURLStats)
 
 export { router }

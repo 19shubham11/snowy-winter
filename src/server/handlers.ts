@@ -4,14 +4,14 @@
 
 import { Request, Response } from 'express'
 import { ShortenURLRequest, Hash} from '../models'
-import { shortenUrlController, getOriginalUrlController, getStatsController } from './controllers'
+import { shortenURLController, getOriginalURLController, getStatsController } from './controllers'
 import { isValidURL } from '../helpers/utils'
 
 function checkHealth(_: Request, res: Response) {
     res.send("OK")
 }
 
-async function shortenUrl(req: Request, res: Response) {
+async function shortenURL(req: Request, res: Response) {
     const inp = req.body as ShortenURLRequest
     if (!inp.url) {
         return res.status(400).send("Missing required field 'url'")
@@ -21,7 +21,7 @@ async function shortenUrl(req: Request, res: Response) {
     }
     try {
         const appURL = req.app.get('APP_URL') as string
-        const shortenedUrlResp = await shortenUrlController(inp.url, appURL)
+        const shortenedUrlResp = await shortenURLController(inp.url, appURL)
         return res.json(shortenedUrlResp)
     } catch (err) {
         console.log('Error', err)
@@ -29,11 +29,11 @@ async function shortenUrl(req: Request, res: Response) {
     }
 }
 
-async function getOriginalUrl(req: Request, res: Response) {
+async function getOriginalURL(req: Request, res: Response) {
     const hash = req.params.id as Hash
 
     try {
-        const redirectUrl = await getOriginalUrlController(hash)
+        const redirectUrl = await getOriginalURLController(hash)
         if (redirectUrl === null) {
             return res.status(404).send('Not Found')
         }
@@ -59,5 +59,5 @@ async function getURLStats(req: Request, res: Response) {
     }
 }
 
-export { checkHealth, shortenUrl, getOriginalUrl, getURLStats }
+export { checkHealth, shortenURL, getOriginalURL, getURLStats }
 

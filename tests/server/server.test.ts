@@ -38,8 +38,7 @@ describe('API Integration Tests', () => {
                 url: "http://www.google.com"
             }
 
-            const res = 
-            await request.post('/shorten')
+            const res = await request.post('/shorten')
                 .set('Content-type', 'application/json')
                 .send(reqData)
 
@@ -105,8 +104,7 @@ describe('API Integration Tests', () => {
                 url: "http://www.google.com"
             }
 
-            const res1 = 
-            await request.post('/shorten')
+            const res1 = await request.post('/shorten')
                 .set('Content-type', 'application/json')
                 .send(reqData)
 
@@ -133,8 +131,7 @@ describe('API Integration Tests', () => {
                 url: "http://www.google.com"
             }
 
-            const res1 = 
-            await request.post('/shorten')
+            const res1 = await request.post('/shorten')
                 .set('Content-type', 'application/json')
                 .send(reqData)
 

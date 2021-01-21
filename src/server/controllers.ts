@@ -9,7 +9,7 @@ import * as store from '../store/datastore'
 const STAT_PREFIX = 'STATS'
 const INIT_STATS = "0"
 
-async function shortenUrlController(inputURL: string, appUrl: string): Promise<ShortenURLResponse> {
+async function shortenURLController(inputURL: string, appUrl: string): Promise<ShortenURLResponse> {
    try {
     // set hash
     const urlHash = hash.createUniqueHash()
@@ -25,28 +25,28 @@ async function shortenUrlController(inputURL: string, appUrl: string): Promise<S
     }
     return shortenURLResponse
    } catch (err) {
-       throw new Error(err)
+       throw err
    }
 }
 
-async function getOriginalUrlController(inpHash: Hash): Promise <string | null> {
+async function getOriginalURLController(inpHash: Hash): Promise <string | null> {
     try {
         // increment stats
         const statKey = getStatKey(inpHash)
-        await store.incrementKey(statKey)
+        await store.incrementValue(statKey)
 
-        const url = await store.getValueFromKey(inpHash)
+        const url = await store.getValue(inpHash)
         return url
     } catch (err) {
-        return err
+        throw err
     }
 }
 
 async function getStatsController(inpHash: Hash): Promise<URLStatsResponse | null> {
     try {
         const statKey = getStatKey(inpHash)
-        const url = await store.getValueFromKey(inpHash)
-        const hits = await store.getValueFromKey(statKey)
+        const url = await store.getValue(inpHash)
+        const hits = await store.getValue(statKey)
 
         if (url === null || hits === null) {
             return null
@@ -55,7 +55,7 @@ async function getStatsController(inpHash: Hash): Promise<URLStatsResponse | nul
         const stats: URLStatsResponse = { url, hits }
         return stats
     } catch (err) {
-        return err
+        throw err
     }
 }
 
@@ -63,4 +63,4 @@ function getStatKey(urlHash: Hash): string {
     return `${STAT_PREFIX}_${urlHash}`
 }
 
-export { shortenUrlController, getOriginalUrlController, getStatsController }
+export { shortenURLController, getOriginalURLController, getStatsController }

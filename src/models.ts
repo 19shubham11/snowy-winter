@@ -8,4 +8,10 @@ interface ShortenURLResponse {
     shortenedUrl: string
 }
 
-export { Hash, ShortenURLRequest, ShortenURLResponse }
+interface URLStatsResponse {
+    url: string,
+    hits: string
+}
+
+export { Hash, ShortenURLRequest, ShortenURLResponse, URLStatsResponse }
+

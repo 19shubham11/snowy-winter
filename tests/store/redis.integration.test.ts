@@ -28,7 +28,7 @@ describe('Redis Integration tests', () => {
             assert.strictEqual(res, value)
         })
     
-        it('Should return null when getting a value that does not exist', async () => {
+        it('Should return null when getting a value for a key that does not exist', async () => {
             const res = await db.get('DoesNotExists')
             assert.strictEqual(res, null)
         })

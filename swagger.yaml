@@ -38,6 +38,22 @@
           404:
             description: Given id does not exist
 
+
+    /{id}/stats:
+      get:
+        description: Get the stats for a particular url that was previously shortened
+        parameters:
+          - $ref:  '#/components/parameters/id'
+        responses:
+          200:
+            description: Successfully retrieved stats
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Stats'
+          404:
+            description: Given id does not exist
+
   components:
     parameters:
       id:
@@ -56,10 +72,9 @@
         properties:
           url:
             type: string
+            example: http://www.google.com/
         required:
-          - url        
-        example:
-          url: http://www.google.com/
+          - url
 
       OutputUrl:
         description: Output body containing the shortened url
@@ -67,5 +82,15 @@
         properties:
           shortenedUrl:
             type: string
-        example:
-          shortenedUrl: "http://localhost/1484ea43"
+            example: "http://localhost/1484ea43"
+
+      Stats:
+        description: Response body for the get stats request
+        type: object
+        properties:
+          url:
+            type: string
+            example: http://www.google.com/
+          hits:
+            type: string
+            example: "11"

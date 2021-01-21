@@ -6,20 +6,28 @@
 import { Hash } from "../models";
 import * as db from "./redis"
 
-async function saveURLAndKey(urlHash: Hash, url: string): Promise <"OK" > {
+async function saveKeyAndValue(key: string, value: string): Promise <"OK"> {
     try {
-        return await db.set(urlHash, url)
+        return await db.set(key, value)
     } catch(err) {
         throw new Error(err)
     }
 }
 
-async function getURLFromKey(urlHash: Hash) {
+async function getValueFromKey(key: string): Promise<string | null> {
     try {
-        return await db.get(urlHash)
+        return await db.get(key)
     } catch(err) {
         throw new Error(err)
     }
 }
 
-export { saveURLAndKey, getURLFromKey}
+async function incrementKey(key: string): Promise<number> {
+    try {
+        return await db.incr(key)
+    } catch(err) {
+        throw new Error(err)
+    }
+}
+
+export { saveKeyAndValue, getValueFromKey, incrementKey }

@@ -27,9 +27,10 @@ The [createUniqueHash](/src/helpers/hash.ts) function is responsible for creatin
 
 ### API
 
-The current implementation has the following 2 endpoints 
+The current implementation has the following 3 endpoints 
 - `POST /shorten`
 - `GET /:id`
+- `GET /:id/stats`
 
 More details can be found in the [Swagger](./swagger.yaml)
 

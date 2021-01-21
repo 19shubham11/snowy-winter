@@ -4,7 +4,7 @@ import express from 'express'
 import assert from 'assert'
 import bodyParser from 'body-parser'
 import { router }  from '../../src/server/routes'
-import { ShortenURLRequest, ShortenURLResponse } from '../../src/models'
+import { ShortenURLRequest, ShortenURLResponse, URLStatsResponse } from '../../src/models'
 
 afterAll(async (done) => {
     redis.flushdb()
@@ -52,7 +52,7 @@ describe('API Integration Tests', () => {
             assert.match(resp.shortenedUrl, /unnamedURLShortener/)
         })
 
-        it('Should return 400 if the request does not contain url key', async () => {
+        it('Should return 400 if the request body does not contain url key', async () => {
             const reqData = {
                 url1: "http://www.google.com"
             }
@@ -87,9 +87,82 @@ describe('API Integration Tests', () => {
             assert(text.includes(`Redirecting to ${website}`))
         })
 
-        it('Should return 404 if the input key does not exist in the database', async () => {
+        it('Should return 404 if the id does not exist in the database', async () => {
             const key = 'LetsUseThisKey'
             const res = await request.get(`/${key}`)
+
+            const { status, text } = res
+
+            assert.deepStrictEqual(status, 404)
+            assert.match(text, /Not Found/)
+        })
+    })
+
+    describe('GET /{id}/stats', () => {
+        it('Should return 200 for a newly created id with no stats', async () => {
+            // create a new shortenedUrl
+            const reqData: ShortenURLRequest = {
+                url: "http://www.google.com"
+            }
+
+            const res1 = 
+            await request.post('/shorten')
+                .set('Content-type', 'application/json')
+                .send(reqData)
+
+            const resp = res1.body as ShortenURLResponse
+
+            // shortenedUrl
+            const url = resp.shortenedUrl
+            const createdHash = url.split('/').pop()
+
+            const res = await request.get(`/${createdHash}/stats`)
+            const {body, status} = res
+            const stats = body as URLStatsResponse
+
+            assert.deepStrictEqual(status, 200)
+            assert.deepStrictEqual(stats, {
+                url: reqData.url,
+                hits: "0"
+            })
+        })
+
+        it('Should return 200 for an existing id with stats', async () => {
+            // create a new shortenedUrl
+            const reqData: ShortenURLRequest = {
+                url: "http://www.google.com"
+            }
+
+            const res1 = 
+            await request.post('/shorten')
+                .set('Content-type', 'application/json')
+                .send(reqData)
+
+            const resp = res1.body as ShortenURLResponse
+
+            // shortenedUrl
+            const url = resp.shortenedUrl
+            const createdHash = url.split('/').pop()
+
+            // call GET /id 50 times
+            for (let i = 0; i < 50; i++) {
+                await request.get(`/${createdHash}`)
+            }
+
+            const res = await request.get(`/${createdHash}/stats`)
+            const {body, status} = res
+            const stats = body as URLStatsResponse
+
+            assert.deepStrictEqual(status, 200)
+            assert.deepStrictEqual(stats, {
+                url: reqData.url,
+                hits: "50"
+            })
+        })
+
+        it('Should return 404 if the id does not exist in the database', async () => {
+            const key = 'DoesNotExists'
+            const res = await request.get(`/${key}/stats`)
 
             const { status, text } = res
 

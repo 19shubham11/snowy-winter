@@ -4,7 +4,7 @@
 
 import { Request, Response } from 'express'
 import { ShortenURLRequest, Hash} from '../models'
-import { shortenUrlController, getOriginalUrlController } from './controllers'
+import { shortenUrlController, getOriginalUrlController, getStatsController } from './controllers'
 import { isValidURL } from '../helpers/utils'
 
 function checkHealth(_: Request, res: Response) {
@@ -44,4 +44,20 @@ async function getOriginalUrl(req: Request, res: Response) {
     }
 }
 
-export { checkHealth, shortenUrl, getOriginalUrl }
+async function getURLStats(req: Request, res: Response) {
+    const hash = req.params.id as Hash
+
+    try {
+        const stats = await getStatsController(hash)
+        if (stats === null) {
+            return res.status(404).send('Not Found')
+        }
+        return res.json(stats)
+    } catch(err) {
+        console.log('Error', err)
+        return res.status(500).send('Internal Server Error')
+    }
+}
+
+export { checkHealth, shortenUrl, getOriginalUrl, getURLStats }
+

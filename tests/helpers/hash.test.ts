@@ -1,4 +1,4 @@
-import * as hash from '../../../src/helpers/hash'
+import * as hash from '../../src/helpers/hash'
 import assert from 'assert'
 
 describe('createUniqueHash', () => {

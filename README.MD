@@ -36,7 +36,7 @@ More details can be found in the [Swagger](./swagger.yaml)
 
 ## Running locally
 
-This was developed on Node v14.15.1, but other LTS versions should also work fine
+This was developed on Node v14.15.1, but other LTS versions should also work fine.
 
 In order to run this locally, make sure you have redis installed and running locally, also ensure that the redis user requires a password (the default user 'default' has no auth). This can be done using the following command on redis-cli on the current user
 ```
@@ -52,7 +52,8 @@ For running tests, simply `npm run tests`. Make sure redis is up and running, ot
 ## Further improvements
 
 - Use better logging. Right now I am using `console.log` and `console.error`, for more control over logs a custom logger with multiple log levels should be used.
-- Add access logs for every endpoint
+- Add access logs for every endpoint.
 - Add a retention policy for redis keys, right now the keys do not expire. Ideally this could use the [Expire](https://redis.io/commands/expire) command from redis.
+- Add more tests. Currently my tests only test a behaviour for a user. Need more tests for the scenario when redis returns an error and the user gets a 500 - Internal Server Error.
 - Integrate with travis/circle-CI so that the tests can be run on every commit.
 - Host this somewhere so that we can also leverage a base url for every redirect.

@@ -5,7 +5,7 @@
 import { Request, Response } from 'express'
 import { ShortenURLRequest, Hash} from '../models'
 import { shortenUrlController, getOriginalUrlController } from './controllers'
-import { isValidURL } from '../utils'
+import { isValidURL } from '../helpers/utils'
 
 function checkHealth(_: Request, res: Response) {
     res.send("OK")
@@ -14,7 +14,7 @@ function checkHealth(_: Request, res: Response) {
 async function shortenUrl(req: Request, res: Response) {
     const inp = req.body as ShortenURLRequest
     if (!inp.url) {
-        return res.status(400).send("Missing required field 'url' ")
+        return res.status(400).send("Missing required field 'url'")
     }
     if (!isValidURL(inp.url)) {
         return res.status(400).send('Invalid URL')

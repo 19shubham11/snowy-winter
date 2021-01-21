@@ -10,7 +10,7 @@ afterAll(async (done) => {
 import * as db from '../../src/store/redis'
 
 describe('Redis Integration tests', () => {
-    it('Should return OK when setting a key', async () => {
+    it('Should return "OK" when setting a key', async () => {
         const val = await db.set('key1', 'http://www.google.com')
         assert.strictEqual(val, 'OK')
     })

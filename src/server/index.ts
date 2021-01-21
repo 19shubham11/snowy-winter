@@ -10,6 +10,11 @@ redisClient.on('error', (err) => {
     console.error('Redis Error!', err)
 })
 
+redisClient.on('end', () => {
+    console.error('Redis connection died!')
+    process.exit(1)
+})
+
 redisClient.on('connect', () => {
     console.error('Connected to Redis!')
 })

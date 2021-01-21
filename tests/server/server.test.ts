@@ -21,14 +21,13 @@ const request = supertest(app)
 
 
 describe('API Integration Tests', () => {
-
     describe('GET /internal/health', () => {
         it('Should return 200', async () => {
             const res = await request.get('/internal/health')
             const { status, text} = res
 
             assert.deepStrictEqual(status, 200)
-            assert.deepStrictEqual(text, "OK")
+            assert.deepStrictEqual(text, 'OK')
         })
     })
 
@@ -58,7 +57,7 @@ describe('API Integration Tests', () => {
             await request.post('/shorten')
                 .set('Content-type', 'application/json')
                 .send(reqData)
-                .expect(400)  
+                .expect(400)
         })
 
         it('Should return 400 if the url is invalid', async () => {
@@ -68,7 +67,7 @@ describe('API Integration Tests', () => {
             await request.post('/shorten')
                 .set('Content-type', 'application/json')
                 .send(reqData)
-                .expect(400)  
+                .expect(400)
         })
     })
 

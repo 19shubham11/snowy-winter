@@ -8,6 +8,7 @@ interface RedisConfig {
 
 interface AppConfig {
     PORT: number,
+    HOST: string
     redis: RedisConfig
 }
 
@@ -21,6 +22,7 @@ const redisConf: RedisConfig = {
 
 const config: AppConfig = {
     PORT: 2001,
+    HOST: '127.0.0.1',
     redis: redisConf
 }
 

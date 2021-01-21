@@ -15,7 +15,8 @@ afterAll(async (done) => {
 const app = express()
 app.use(bodyParser.json())
 app.use('/', router)
-app.set("PORT", 8080)
+const appURL = "unnamedURLShortener"
+app.set("APP_URL", appURL)
 
 const request = supertest(app)
 
@@ -47,7 +48,8 @@ describe('API Integration Tests', () => {
 
             assert.deepStrictEqual(status, 200)
             assert(resp.shortenedUrl)
-            assert.match(resp.shortenedUrl, /localhost:8080/)
+            // the resulting url will of of the form `unnamedURLShortener/35fc0271`
+            assert.match(resp.shortenedUrl, /unnamedURLShortener/)
         })
 
         it('Should return 400 if the request does not contain url key', async () => {

@@ -6,12 +6,12 @@ import * as hash from '../helpers/hash'
 import { ShortenURLResponse, Hash } from '../models'
 import * as store from '../store/datastore'
 
-async function shortenUrlController(inputURL: string, port: number): Promise<ShortenURLResponse> {
+async function shortenUrlController(inputURL: string, appUrl: string): Promise<ShortenURLResponse> {
    try {
     const urlHash = hash.createUniqueHash()
     await store.saveURLAndKey(urlHash, inputURL)
 
-    const shortenedUrl =  `http://localhost:${port}/${urlHash}`
+    const shortenedUrl =  `${appUrl}/${urlHash}`
     const shortenURLResponse : ShortenURLResponse = {
         shortenedUrl
     }

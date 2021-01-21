@@ -20,8 +20,8 @@ async function shortenUrl(req: Request, res: Response) {
         return res.status(400).send('Invalid URL')
     }
     try {
-        const appPort = req.app.get('PORT') as number
-        const shortenedUrlResp = await shortenUrlController(inp.url, appPort)
+        const appURL = req.app.get('APP_URL') as string
+        const shortenedUrlResp = await shortenUrlController(inp.url, appURL)
         return res.json(shortenedUrlResp)
     } catch (err) {
         console.log('Error', err)

@@ -27,9 +27,9 @@ const app = express()
 app.use(bodyParser.json())
 
 app.use('/', router)
-const PORT = config.PORT
-app.set('PORT', PORT)
+const appURl = `${config.HOST}:${config.PORT}`
+app.set('APP_URL', appURl)
 
-app.listen(PORT, () => {
-    console.log(`server started at http://localhost:${PORT}`)
+app.listen(config.PORT, () => {
+    console.log(`server started at ${appURl}`)
 })

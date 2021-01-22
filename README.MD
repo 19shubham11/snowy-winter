@@ -56,5 +56,6 @@ For running tests, simply `npm run tests`. Make sure redis is up and running, ot
 - Add access logs for every endpoint.
 - Add a retention policy for redis keys, right now the keys do not expire. Ideally this could use the [Expire](https://redis.io/commands/expire) command from redis.
 - Add more tests. Currently my tests only test a behaviour for a user. Need more tests for the scenario when redis returns an error and the user gets a 500 - Internal Server Error.
+- Better error handling in the route handlers.
 - Integrate with travis/circle-CI so that the tests can be run on every commit.
 - Host this somewhere so that we can also leverage a base url for every redirect.

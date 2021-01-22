@@ -7,7 +7,7 @@
     "build": "tsc --p tsconfig.json",
     "lint": "tslint -c tslint.json -p tsconfig.json",
     "start": "npm run build && node .",
-    "test": "jest --verbose --coverage"
+    "test": "npm run lint && jest --verbose --coverage"
   },
   "author": "",
   "license": "ISC",

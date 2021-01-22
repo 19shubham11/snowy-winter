@@ -31,11 +31,12 @@ async function shortenURLController(inputURL: string, appUrl: string): Promise<S
 
 async function getOriginalURLController(inpHash: Hash): Promise <string | null> {
     try {
-        // increment stats
-        const statKey = getStatKey(inpHash)
-        await store.incrementValue(statKey)
-
         const url = await store.getValue(inpHash)
+        if (url !== null) {
+            // increment stats
+            const statKey = getStatKey(inpHash)
+            await store.incrementValue(statKey)
+        }
         return url
     } catch (err) {
         throw err

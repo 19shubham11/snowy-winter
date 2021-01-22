@@ -6,7 +6,7 @@ import bodyParser from 'body-parser'
 import { router }  from '../../src/server/routes'
 import { ShortenURLRequest, ShortenURLResponse, URLStatsResponse } from '../../src/models'
 
-afterAll(async (done) => {
+afterAll((done) => {
     redis.flushdb()
     redis.quit()
     done()
@@ -141,8 +141,9 @@ describe('API Integration Tests', () => {
             const url = resp.shortenedUrl
             const createdHash = url.split('/').pop()
 
+            const noOfRequests = 50
             // call GET /id 50 times
-            for (let i = 0; i < 50; i++) {
+            for (let i = 0; i < noOfRequests; i++) {
                 await request.get(`/${createdHash}`)
             }
 
@@ -153,7 +154,7 @@ describe('API Integration Tests', () => {
             assert.deepStrictEqual(status, 200)
             assert.deepStrictEqual(stats, {
                 url: reqData.url,
-                hits: "50"
+                hits: `${noOfRequests}`
             })
         })
 

@@ -92,5 +92,5 @@
             type: string
             example: http://www.google.com/
           hits:
-            type: string
-            example: "11"
+            type: number
+            example: 11

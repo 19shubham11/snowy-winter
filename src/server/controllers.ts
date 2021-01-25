@@ -7,7 +7,7 @@ import { ShortenURLResponse, Hash, URLStatsResponse} from '../models'
 import * as store from '../store/datastore'
 
 const STAT_PREFIX = 'STATS'
-const INIT_STATS = "0"
+const INIT_STATS = 0
 
 async function shortenURLController(inputURL: string, appUrl: string): Promise<ShortenURLResponse> {
    try {
@@ -17,7 +17,7 @@ async function shortenURLController(inputURL: string, appUrl: string): Promise<S
 
     // set initial stats
     const statKey = getStatKey(urlHash)
-    await store.saveKeyAndValue(statKey, INIT_STATS)
+    await store.saveKeyAndValue(statKey, `${INIT_STATS}`)
 
     const shortenedUrl =  `${appUrl}/${urlHash}`
     const shortenURLResponse : ShortenURLResponse = {
@@ -52,8 +52,8 @@ async function getStatsController(inpHash: Hash): Promise<URLStatsResponse | nul
         if (url === null || hits === null) {
             return null
         }
-
-        const stats: URLStatsResponse = { url, hits }
+        const hitsParsed = parseInt(hits, 10)
+        const stats: URLStatsResponse = { url, hits: hitsParsed }
         return stats
     } catch (err) {
         throw err

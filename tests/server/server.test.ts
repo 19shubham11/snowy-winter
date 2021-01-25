@@ -121,7 +121,7 @@ describe('API Integration Tests', () => {
             assert.deepStrictEqual(status, 200)
             assert.deepStrictEqual(stats, {
                 url: reqData.url,
-                hits: "0"
+                hits: 0
             })
         })
 
@@ -154,7 +154,7 @@ describe('API Integration Tests', () => {
             assert.deepStrictEqual(status, 200)
             assert.deepStrictEqual(stats, {
                 url: reqData.url,
-                hits: `${noOfRequests}`
+                hits: noOfRequests
             })
         })
 

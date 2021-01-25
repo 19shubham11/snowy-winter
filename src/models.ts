@@ -10,7 +10,7 @@ interface ShortenURLResponse {
 
 interface URLStatsResponse {
     url: string,
-    hits: string
+    hits: number
 }
 
 export { Hash, ShortenURLRequest, ShortenURLResponse, URLStatsResponse }

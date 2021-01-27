@@ -143,9 +143,11 @@ describe('API Integration Tests', () => {
 
             const noOfRequests = 50
             // call GET /id 50 times
+            const promises = []
             for (let i = 0; i < noOfRequests; i++) {
-                await request.get(`/${createdHash}`)
+                promises.push(request.get(`/${createdHash}`))
             }
+            await Promise.all(promises)
 
             const res = await request.get(`/${createdHash}/stats`)
             const {body, status} = res

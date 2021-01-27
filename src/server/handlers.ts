@@ -60,4 +60,3 @@ async function getURLStats(req: Request, res: Response) {
 }
 
 export { checkHealth, shortenURL, getOriginalURL, getURLStats }
-

@@ -6,6 +6,7 @@ import { Request, Response } from 'express'
 import { ShortenURLRequest, Hash} from '../models'
 import { shortenURLController, getOriginalURLController, getStatsController } from './controllers'
 import { isValidURL } from '../helpers/utils'
+import { httpErrorBadRequest, httpErrorNotFound, httpInternalServerError } from '../helpers/expressHelpers'
 
 function checkHealth(_: Request, res: Response) {
     res.send("OK")
@@ -14,18 +15,18 @@ function checkHealth(_: Request, res: Response) {
 async function shortenURL(req: Request, res: Response) {
     const inp = req.body as ShortenURLRequest
     if (!inp.url) {
-        return res.status(400).send("Missing required field 'url'")
+        return httpErrorBadRequest(res, "Missing required field 'url'")
     }
     if (!isValidURL(inp.url)) {
-        return res.status(400).send('Invalid URL')
+        return httpErrorBadRequest(res, 'Invalid URL')
     }
     try {
         const appURL = req.app.get('APP_URL') as string
         const shortenedUrlResp = await shortenURLController(inp.url, appURL)
         return res.json(shortenedUrlResp)
     } catch (err) {
-        console.log('Error', err)
-        return res.status(500).send('Internal Server Error')
+        console.error('Error', err)
+        return httpInternalServerError(res)
     }
 }
 
@@ -35,12 +36,12 @@ async function getOriginalURL(req: Request, res: Response) {
     try {
         const redirectUrl = await getOriginalURLController(hash)
         if (redirectUrl === null) {
-            return res.status(404).send('Not Found')
+            return httpErrorNotFound(res)
         }
         res.redirect(redirectUrl)
     } catch(err) {
-        console.log('Error', err)
-        return res.status(500).send('Internal Server Error')
+        console.error('Error', err)
+        return httpInternalServerError(res)
     }
 }
 
@@ -50,12 +51,12 @@ async function getURLStats(req: Request, res: Response) {
     try {
         const stats = await getStatsController(hash)
         if (stats === null) {
-            return res.status(404).send('Not Found')
+            return httpErrorNotFound(res)
         }
         return res.json(stats)
     } catch(err) {
-        console.log('Error', err)
-        return res.status(500).send('Internal Server Error')
+        console.error('Error', err)
+        return httpInternalServerError(res)
     }
 }
 

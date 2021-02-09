@@ -2,31 +2,18 @@
  * Wrapper on the redis operation, this acts as the API for any db operation in the app,
  * will remain the same even if db implementation changes
  */
-
  import * as db from "./redis"
 
-async function saveKeyAndValue(key: string, value: string): Promise <"OK"> {
-    try {
-        return await db.set(key, value)
-    } catch(err) {
-        throw new Error(err)
-    }
+function saveKeyAndValue(key: string, value: string): Promise <"OK"> {
+    return db.set(key, value)
 }
 
-async function getValue(key: string): Promise<string | null> {
-    try {
-        return await db.get(key)
-    } catch(err) {
-        throw new Error(err)
-    }
+function getValue(key: string): Promise<string | null> {
+    return db.get(key)
 }
 
-async function incrementValue(key: string): Promise<number> {
-    try {
-        return await db.incr(key)
-    } catch(err) {
-        throw new Error(err)
-    }
+function incrementValue(key: string): Promise<number> {
+    return db.incr(key)
 }
 
 export { saveKeyAndValue, getValue, incrementValue }

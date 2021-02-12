@@ -2,18 +2,20 @@ name: Node.js CI
 
 on:
   push:
-    branches: [ $default-branch ]
+    branches:
+      - '*'
   pull_request:
     branches: [ $default-branch ]
+  workflow_dispatch:
 
 jobs:
   build:
 
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
 
     strategy:
       matrix:
-        node-version: [10.x, 12.x, 14.x, 15.x]
+        node-version: [14.x]
 
     steps:
     - uses: actions/checkout@v2
@@ -23,3 +25,7 @@ jobs:
         node-version: ${{ matrix.node-version }}
     - name: Install Dependencies
       run: npm ci
+    - name: Build
+      run: npm run build
+    - name: Tests
+      run: npm run test

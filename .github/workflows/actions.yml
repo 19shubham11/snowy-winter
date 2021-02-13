@@ -3,7 +3,7 @@ name: Node.js CI
 on:
   push:
     paths-ignore:
-    - 'README.md'
+    - 'README.MD'
     branches:
       - main
   pull_request:

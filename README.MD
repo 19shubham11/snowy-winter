@@ -52,6 +52,10 @@ Once redis is setup with auth, the server can be started with `npm run start`. T
 
 For running tests, simply `npm run tests`. Make sure redis is up and running, otherwise tests may misbehave. Tests are run on a different redis database (database#2) and the db is cleaned up after the tests.
 
+## CI
+
+I am using GitHub actions for CI, more details can be found in the [yaml](https://github.com/19shubham11/snowy-winter/blob/main/.github/workflows/actions.yml) file
+
 ## Further improvements
 
 - Use better logging. Right now I am using `console.log` and `console.error`, for more control over logs a custom logger with multiple log levels should be used.

@@ -4,7 +4,7 @@ import {getRedisInstance, setupRedisInstance} from '../src/store/setup'
 const conf: RedisConfig = {
     user: 'default',
     port:  6379,
-    host: '127.0.0.1',
+    host: 'localhost',
     password: process.env.REDIS_PASS || '',
     db: 2
 }

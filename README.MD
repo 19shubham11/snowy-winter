@@ -41,7 +41,7 @@ More details can be found in the [Swagger](./swagger.yaml)
 
 This was developed on Node v14.15.1, but other LTS versions should also work fine.
 
-In order to run this locally, make sure you have redis installed and running locally, also ensure that the redis user requires a password (the default user 'default' has no auth). Alternatively, a docker image for redis can be used, this is how I am using running the test in the CI. To get a redis instance for docker running with password - 
+In order to run this locally, make sure you have redis installed and running locally, also ensure that the redis user requires a password (the default user 'default' has no auth). Alternatively, a docker image for redis can be used, this is how I am using running the test in the CI. To get a redis instance with docker  - 
 ```
 docker run -d -p 6379:6379 redis redis-server --requirepass 'yourPassword' --port 6379
 ```

@@ -1,6 +1,6 @@
 ![Node.js CI](https://github.com/19shubham11/snowy-winter/workflows/Node.js%20CI/badge.svg?branch=main)
 
-# Unnamed-URL-Shortener
+# Unnamed-URL-Shortener :snowman: :snowflake:
 
 This is a simple url-shortener inspired by [Cutt.ly](https://cutt.ly/). It returns a unique shortened url for every input which redirects to the original url.
 

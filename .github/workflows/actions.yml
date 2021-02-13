@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - '*'
-  pull_request:
+  pull_request_target:
     branches: [ $default-branch ]
   workflow_dispatch:
 
@@ -12,6 +12,7 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
+    environment: build
 
     services:
       redis:
@@ -26,6 +27,8 @@ jobs:
     strategy:
       matrix:
         node-version: [14.x]
+    env:
+      REDIS_PASS: ${{ secrets.REDIS_PASS }}    
 
     steps:
     - uses: actions/checkout@v2
@@ -33,15 +36,11 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
+    - name: Setup redis
+      run: docker run -d -p 6379:6379 redis redis-server --requirepass $REDIS_PASS
     - name: Install Dependencies
       run: npm ci
     - name: Build
       run: npm run build
-    - name: Tests
-      env:
-        TEST: ${{ secrets.TEST }}
-        REDIS_PASS: redis123
-      run: |
-        echo $TEST
-        docker run -d -p 6379:6379 redis redis-server --requirepass $REDIS_PASS
-        npm run test
+    - name: Test
+      run: npm run test

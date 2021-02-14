@@ -5,7 +5,7 @@ interface ShortenURLRequest {
 }
 
 interface ShortenURLResponse {
-    shortenedUrl: string
+    shortenedURL: string
 }
 
 interface URLStatsResponse {

@@ -22,8 +22,8 @@ async function shortenURL(req: Request, res: Response) {
     }
     try {
         const appURL = req.app.get('APP_URL') as string
-        const shortenedUrlResp = await shortenURLController(inp.url, appURL)
-        return res.json(shortenedUrlResp)
+        const shortenedURLResp = await shortenURLController(inp.url, appURL)
+        return res.json(shortenedURLResp)
     } catch (err) {
         console.error('Error', err)
         return httpInternalServerError(res)

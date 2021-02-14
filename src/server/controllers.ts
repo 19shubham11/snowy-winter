@@ -19,9 +19,9 @@ async function shortenURLController(inputURL: string, appUrl: string): Promise<S
     const statKey = getStatKey(urlHash)
     await store.saveKeyAndValue(statKey, `${INIT_STATS}`)
 
-    const shortenedUrl =  `${appUrl}/${urlHash}`
+    const shortenedURL =  `${appUrl}/${urlHash}`
     const shortenURLResponse : ShortenURLResponse = {
-        shortenedUrl
+        shortenedURL
     }
     return shortenURLResponse
    } catch (err) {

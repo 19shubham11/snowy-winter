@@ -80,7 +80,7 @@
         description: Output body containing the shortened url
         type: object
         properties:
-          shortenedUrl:
+          shortenedURL:
             type: string
             example: "http://localhost/1484ea43"
 

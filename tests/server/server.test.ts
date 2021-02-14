@@ -46,9 +46,9 @@ describe('API Integration Tests', () => {
             const resp = body as ShortenURLResponse
 
             assert.deepStrictEqual(status, 200)
-            assert(resp.shortenedUrl)
+            assert(resp.shortenedURL)
             // the resulting url will of of the form `unnamedURLShortener/35fc0271`
-            assert.match(resp.shortenedUrl, /unnamedURLShortener/)
+            assert.match(resp.shortenedURL, /unnamedURLShortener/)
         })
 
         it('Should return 400 if the request body does not contain url key', async () => {
@@ -99,7 +99,7 @@ describe('API Integration Tests', () => {
 
     describe('GET /{id}/stats', () => {
         it('Should return 200 for a newly created id with no stats', async () => {
-            // create a new shortenedUrl
+            // create a new shortenedURL
             const reqData: ShortenURLRequest = {
                 url: "http://www.google.com"
             }
@@ -110,8 +110,8 @@ describe('API Integration Tests', () => {
 
             const resp = res1.body as ShortenURLResponse
 
-            // shortenedUrl
-            const url = resp.shortenedUrl
+            // shortenedURL
+            const url = resp.shortenedURL
             const createdHash = url.split('/').pop()
 
             const res = await request.get(`/${createdHash}/stats`)
@@ -126,7 +126,7 @@ describe('API Integration Tests', () => {
         })
 
         it('Should return 200 for an existing id with stats', async () => {
-            // create a new shortenedUrl
+            // create a new shortenedURL
             const reqData: ShortenURLRequest = {
                 url: "http://www.google.com"
             }
@@ -137,8 +137,8 @@ describe('API Integration Tests', () => {
 
             const resp = res1.body as ShortenURLResponse
 
-            // shortenedUrl
-            const url = resp.shortenedUrl
+            // shortenedURL
+            const url = resp.shortenedURL
             const createdHash = url.split('/').pop()
 
             const noOfRequests = 50

@@ -10,7 +10,7 @@ describe('createUniqueHash', () => {
     it('Should return 10k unique hashes for 10k inputs', () => {
         const outSet = new Set<string>()
         const tenThousand = 10000
-        for(let i = 0; i < tenThousand; i++) {
+        for (let i = 0; i < tenThousand; i++) {
             outSet.add(hash.createUniqueHash())
         }
         // since a set always contains unique elements, the length should be tenThousand

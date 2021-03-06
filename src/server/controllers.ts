@@ -3,33 +3,33 @@
  */
 
 import * as hash from '../helpers/hash'
-import { ShortenURLResponse, Hash, URLStatsResponse} from '../models'
+import { ShortenURLResponse, Hash, URLStatsResponse } from '../models'
 import * as store from '../store/datastore'
 
 const STAT_PREFIX = 'STATS'
 const INIT_STATS = 0
 
 async function shortenURLController(inputURL: string, appUrl: string): Promise<ShortenURLResponse> {
-   try {
-    // set hash
-    const urlHash = hash.createUniqueHash()
-    await store.saveKeyAndValue(urlHash, inputURL)
+    try {
+        // set hash
+        const urlHash = hash.createUniqueHash()
+        await store.saveKeyAndValue(urlHash, inputURL)
 
-    // set initial stats
-    const statKey = getStatKey(urlHash)
-    await store.saveKeyAndValue(statKey, `${INIT_STATS}`)
+        // set initial stats
+        const statKey = getStatKey(urlHash)
+        await store.saveKeyAndValue(statKey, `${INIT_STATS}`)
 
-    const shortenedURL =  `${appUrl}/${urlHash}`
-    const shortenURLResponse : ShortenURLResponse = {
-        shortenedURL
+        const shortenedURL = `${appUrl}/${urlHash}`
+        const shortenURLResponse: ShortenURLResponse = {
+            shortenedURL,
+        }
+        return shortenURLResponse
+    } catch (err) {
+        throw err
     }
-    return shortenURLResponse
-   } catch (err) {
-       throw err
-   }
 }
 
-async function getOriginalURLController(inpHash: Hash): Promise <string | null> {
+async function getOriginalURLController(inpHash: Hash): Promise<string | null> {
     try {
         const url = await store.getValue(inpHash)
         if (url !== null) {

@@ -2,9 +2,9 @@
  * Wrapper on the redis operation, this acts as the API for any db operation in the app,
  * will remain the same even if db implementation changes
  */
- import * as db from "./redis"
+import * as db from './redis'
 
-function saveKeyAndValue(key: string, value: string): Promise <"OK"> {
+function saveKeyAndValue(key: string, value: string): Promise<'OK'> {
     return db.set(key, value)
 }
 

@@ -3,7 +3,7 @@ import supertest from 'supertest'
 import express from 'express'
 import assert from 'assert'
 import bodyParser from 'body-parser'
-import { router }  from '../../src/server/routes'
+import { router } from '../../src/server/routes'
 import { ShortenURLRequest, ShortenURLResponse, URLStatsResponse } from '../../src/models'
 
 afterAll((done) => {
@@ -15,17 +15,16 @@ afterAll((done) => {
 const app = express()
 app.use(bodyParser.json())
 app.use('/', router)
-const appURL = "unnamedURLShortener"
-app.set("APP_URL", appURL)
+const appURL = 'unnamedURLShortener'
+app.set('APP_URL', appURL)
 
 const request = supertest(app)
-
 
 describe('API Integration Tests', () => {
     describe('GET /internal/health', () => {
         it('Should return 200', async () => {
             const res = await request.get('/internal/health')
-            const { status, text} = res
+            const { status, text } = res
 
             assert.deepStrictEqual(status, 200)
             assert.deepStrictEqual(text, 'OK')
@@ -35,12 +34,10 @@ describe('API Integration Tests', () => {
     describe('POST /shorten', () => {
         it('Should return 200 for a valid url', async () => {
             const reqData: ShortenURLRequest = {
-                url: "http://www.google.com"
+                url: 'http://www.google.com',
             }
 
-            const res = await request.post('/shorten')
-                .set('Content-type', 'application/json')
-                .send(reqData)
+            const res = await request.post('/shorten').set('Content-type', 'application/json').send(reqData)
 
             const { status, body } = res
             const resp = body as ShortenURLResponse
@@ -53,22 +50,16 @@ describe('API Integration Tests', () => {
 
         it('Should return 400 if the request body does not contain url key', async () => {
             const reqData = {
-                url1: "http://www.google.com"
+                url1: 'http://www.google.com',
             }
-            await request.post('/shorten')
-                .set('Content-type', 'application/json')
-                .send(reqData)
-                .expect(400)
+            await request.post('/shorten').set('Content-type', 'application/json').send(reqData).expect(400)
         })
 
         it('Should return 400 if the url is invalid', async () => {
             const reqData: ShortenURLRequest = {
-                url: "abcdsdfjsdfjdlf"
+                url: 'abcdsdfjsdfjdlf',
             }
-            await request.post('/shorten')
-                .set('Content-type', 'application/json')
-                .send(reqData)
-                .expect(400)
+            await request.post('/shorten').set('Content-type', 'application/json').send(reqData).expect(400)
         })
     })
 
@@ -101,12 +92,10 @@ describe('API Integration Tests', () => {
         it('Should return 200 for a newly created id with no stats', async () => {
             // create a new shortenedURL
             const reqData: ShortenURLRequest = {
-                url: "http://www.google.com"
+                url: 'http://www.google.com',
             }
 
-            const res1 = await request.post('/shorten')
-                .set('Content-type', 'application/json')
-                .send(reqData)
+            const res1 = await request.post('/shorten').set('Content-type', 'application/json').send(reqData)
 
             const resp = res1.body as ShortenURLResponse
 
@@ -115,25 +104,23 @@ describe('API Integration Tests', () => {
             const createdHash = url.split('/').pop()
 
             const res = await request.get(`/${createdHash}/stats`)
-            const {body, status} = res
+            const { body, status } = res
             const stats = body as URLStatsResponse
 
             assert.deepStrictEqual(status, 200)
             assert.deepStrictEqual(stats, {
                 url: reqData.url,
-                hits: 0
+                hits: 0,
             })
         })
 
         it('Should return 200 for an existing id with stats', async () => {
             // create a new shortenedURL
             const reqData: ShortenURLRequest = {
-                url: "http://www.google.com"
+                url: 'http://www.google.com',
             }
 
-            const res1 = await request.post('/shorten')
-                .set('Content-type', 'application/json')
-                .send(reqData)
+            const res1 = await request.post('/shorten').set('Content-type', 'application/json').send(reqData)
 
             const resp = res1.body as ShortenURLResponse
 
@@ -150,13 +137,13 @@ describe('API Integration Tests', () => {
             await Promise.all(promises)
 
             const res = await request.get(`/${createdHash}/stats`)
-            const {body, status} = res
+            const { body, status } = res
             const stats = body as URLStatsResponse
 
             assert.deepStrictEqual(status, 200)
             assert.deepStrictEqual(stats, {
                 url: reqData.url,
-                hits: noOfRequests
+                hits: noOfRequests,
             })
         })
 

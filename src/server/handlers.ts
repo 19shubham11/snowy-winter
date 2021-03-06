@@ -3,13 +3,13 @@
  */
 
 import { Request, Response } from 'express'
-import { ShortenURLRequest, Hash} from '../models'
+import { ShortenURLRequest, Hash } from '../models'
 import { shortenURLController, getOriginalURLController, getStatsController } from './controllers'
 import { isValidURL } from '../helpers/utils'
 import { httpErrorBadRequest, httpErrorNotFound, httpInternalServerError } from '../helpers/expressHelpers'
 
 function checkHealth(_: Request, res: Response) {
-    res.send("OK")
+    res.send('OK')
 }
 
 async function shortenURL(req: Request, res: Response) {
@@ -39,7 +39,7 @@ async function getOriginalURL(req: Request, res: Response) {
             return httpErrorNotFound(res)
         }
         res.redirect(redirectUrl)
-    } catch(err) {
+    } catch (err) {
         console.error('Error', err)
         return httpInternalServerError(res)
     }
@@ -54,7 +54,7 @@ async function getURLStats(req: Request, res: Response) {
             return httpErrorNotFound(res)
         }
         return res.json(stats)
-    } catch(err) {
+    } catch (err) {
         console.error('Error', err)
         return httpInternalServerError(res)
     }

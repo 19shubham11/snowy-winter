@@ -6,13 +6,13 @@ let _redis: redis.RedisClient
 function setupRedisInstance(redisConf: RedisConfig) {
     const redisUrl = `redis://${redisConf.user}:${redisConf.password}@${redisConf.host}/${redisConf.db}`
 
-    const client = redis.createClient({ url:redisUrl })
+    const client = redis.createClient({ url: redisUrl })
     _redis = client
 }
 
 function getRedisInstance(): redis.RedisClient {
     if (!_redis) {
-        console.error("Redis not initialised! Please call getRedisInstance() first")
+        console.error('Redis not initialised! Please call getRedisInstance() first')
         process.exit(1)
     }
     return _redis

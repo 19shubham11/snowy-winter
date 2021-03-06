@@ -1,13 +1,13 @@
 interface RedisConfig {
-    user: string,
-    port: number,
-    host: string,
-    password: string,
+    user: string
+    port: number
+    host: string
+    password: string
     db: number
 }
 
 interface AppConfig {
-    PORT: number,
+    PORT: number
     HOST: string
     redis: RedisConfig
 }
@@ -17,13 +17,13 @@ const redisConf: RedisConfig = {
     host: process.env.REDIS_HOST || '127.0.0.1',
     user: process.env.REDS_USER || 'default',
     password: process.env.REDIS_PASS || '',
-    db: 0
+    db: 0,
 }
 
 const config: AppConfig = {
     PORT: 2001,
     HOST: '127.0.0.1',
-    redis: redisConf
+    redis: redisConf,
 }
 
 export { config, RedisConfig }

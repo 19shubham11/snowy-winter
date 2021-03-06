@@ -1,7 +1,7 @@
 type Hash = string
 
 interface ShortenURLRequest {
-    url : string
+    url: string
 }
 
 interface ShortenURLResponse {
@@ -9,9 +9,8 @@ interface ShortenURLResponse {
 }
 
 interface URLStatsResponse {
-    url: string,
+    url: string
     hits: number
 }
 
 export { Hash, ShortenURLRequest, ShortenURLResponse, URLStatsResponse }
-

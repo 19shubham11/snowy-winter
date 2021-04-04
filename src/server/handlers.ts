@@ -25,7 +25,7 @@ async function shortenURL(req: Request, res: Response) {
         const shortenedURLResp = await shortenURLController(inp.url, appURL)
         return res.json(shortenedURLResp)
     } catch (err) {
-        console.error('Error', err)
+        console.error(err)
         return httpInternalServerError(res)
     }
 }
@@ -40,7 +40,7 @@ async function getOriginalURL(req: Request, res: Response) {
         }
         res.redirect(redirectUrl)
     } catch (err) {
-        console.error('Error', err)
+        console.error(err)
         return httpInternalServerError(res)
     }
 }
@@ -55,7 +55,7 @@ async function getURLStats(req: Request, res: Response) {
         }
         return res.json(stats)
     } catch (err) {
-        console.error('Error', err)
+        console.error(err)
         return httpInternalServerError(res)
     }
 }

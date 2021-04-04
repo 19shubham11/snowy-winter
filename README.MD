@@ -61,5 +61,4 @@ I am using GitHub actions for CI, more details can be found in the [yaml](https:
 - Use better logging. Right now I am using `console.log` and `console.error`, for more control over logs a custom logger with multiple log levels should be used.
 - Add access logs for every endpoint.
 - Add a retention policy for redis keys, right now the keys do not expire. Ideally this could use the [Expire](https://redis.io/commands/expire) command from redis.
-- Add more tests. Currently my tests only test a behaviour for a user. Need more tests for the scenario when redis returns an error and the user gets a 500 - Internal Server Error.
 - Host this somewhere so that we can also leverage a base url for every redirect.

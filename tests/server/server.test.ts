@@ -5,12 +5,7 @@ import assert from 'assert'
 import bodyParser from 'body-parser'
 import { router } from '../../src/server/routes'
 import { ShortenURLRequest, ShortenURLResponse, URLStatsResponse } from '../../src/models'
-
-afterAll((done) => {
-    redis.flushdb()
-    redis.quit()
-    done()
-})
+import * as store from '../../src/store/datastore'
 
 const app = express()
 app.use(bodyParser.json())
@@ -21,6 +16,17 @@ app.set('APP_URL', appURL)
 const request = supertest(app)
 
 describe('API Integration Tests', () => {
+    afterAll((done) => {
+        redis.flushdb()
+        redis.quit()
+        done()
+    })
+
+    afterEach(() => {
+        jest.restoreAllMocks()
+        jest.clearAllMocks()
+    })
+
     describe('GET /internal/health', () => {
         it('Should return 200', async () => {
             const res = await request.get('/internal/health')
@@ -61,6 +67,20 @@ describe('API Integration Tests', () => {
             }
             await request.post('/shorten').set('Content-type', 'application/json').send(reqData).expect(400)
         })
+
+        it('Should return 500 if db returns an error', async () => {
+            jest.spyOn(store, 'saveKeyAndValue').mockImplementation(() => {
+                return Promise.reject('nope')
+            })
+            const reqData: ShortenURLRequest = {
+                url: 'http://www.google.com',
+            }
+
+            const res = await request.post('/shorten').set('Content-type', 'application/json').send(reqData)
+
+            const { status } = res
+            assert.deepStrictEqual(status, 500)
+        })
     })
 
     describe('GET /{id}', () => {
@@ -85,6 +105,16 @@ describe('API Integration Tests', () => {
 
             assert.deepStrictEqual(status, 404)
             assert.match(text, /Not Found/)
+        })
+
+        it('Should return 500 if db returns an error', async () => {
+            jest.spyOn(store, 'getValue').mockImplementation(() => {
+                return Promise.reject('nope')
+            })
+            const res = await request.get(`/something`)
+
+            const { status } = res
+            assert.deepStrictEqual(status, 500)
         })
     })
 
@@ -155,6 +185,16 @@ describe('API Integration Tests', () => {
 
             assert.deepStrictEqual(status, 404)
             assert.match(text, /Not Found/)
+        })
+
+        it('Should return 500 if db returns an error', async () => {
+            jest.spyOn(store, 'getValue').mockImplementation(() => {
+                return Promise.reject('nope')
+            })
+            const res = await request.get(`/something/stats`)
+
+            const { status } = res
+            assert.deepStrictEqual(status, 500)
         })
     })
 })

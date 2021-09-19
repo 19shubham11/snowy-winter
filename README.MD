@@ -8,7 +8,7 @@ This is a simple url-shortener inspired by [Cutt.ly](https://cutt.ly/). It retur
 
 ### Technologies used
 
-This project is written in typescript and uses express as a web framework. I am using Redis as a database here to store the key/value pair of the input urls and the corresponding redirect-code. Tests are powered by jest.
+This project is written in typescript and uses fastify as a web framework. I am using Redis as a database here to store the key/value pair of the input urls and the corresponding redirect-code. Tests are powered by jest.
 Other dependencies can be found in [package.json](./package.json)
 
 ### Project structure

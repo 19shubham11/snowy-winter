@@ -2,15 +2,12 @@
  * Routes just pass on the requests to the appropriate handlers
  */
 
-import express from 'express'
 import { checkHealth, shortenURL, getOriginalURL, getURLStats } from './handlers'
+import { FastifyInstance } from 'fastify'
 
-const router = express.Router()
-
-router.get('/internal/health', checkHealth)
-
-router.post('/shorten', shortenURL)
-router.get('/:id', getOriginalURL)
-router.get('/:id/stats', getURLStats)
-
-export { router }
+export async function router(app: FastifyInstance, _: object) {
+    app.get('/internal/health', checkHealth)
+    app.post('/shorten', shortenURL)
+    app.get('/:id', getOriginalURL)
+    app.get('/:id/stats', getURLStats)
+}

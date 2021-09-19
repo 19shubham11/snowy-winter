@@ -1,4 +1,3 @@
-import express from 'express'
 import { config } from '../config'
 import { setupRedisInstance, getRedisInstance } from '../store/setup'
 
@@ -20,16 +19,15 @@ redisClient.on('connect', () => {
 })
 
 // server setup
-import bodyParser from 'body-parser'
+import fastify from 'fastify'
 import { router } from './routes'
 
-const app = express()
-app.use(bodyParser.json())
+const server = fastify({
+    logger: true,
+})
 
-app.use('/', router)
-const appURl = `${config.HOST}:${config.PORT}`
-app.set('APP_URL', appURl)
+server.register(router)
 
-app.listen(config.PORT, () => {
-    console.log(`server started at ${appURl}`)
+server.listen(config.PORT, () => {
+    console.info(`Server started on port ${config.PORT}`)
 })

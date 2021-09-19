@@ -1,14 +1,14 @@
-import { Response } from 'express'
+import { FastifyReply } from 'fastify'
 
-function httpErrorBadRequest(res: Response, status?: string) {
+function httpErrorBadRequest(res: FastifyReply, status?: string) {
     res.status(400).send(status || 'Bad Request')
 }
 
-function httpErrorNotFound(res: Response) {
+function httpErrorNotFound(res: FastifyReply) {
     res.status(404).send('Not Found')
 }
 
-function httpInternalServerError(res: Response) {
+function httpInternalServerError(res: FastifyReply) {
     res.status(500).send('Internal Server Error')
 }
 

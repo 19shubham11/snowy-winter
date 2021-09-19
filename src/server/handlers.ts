@@ -2,17 +2,22 @@
  * Handlers are responsible for inp/out validation, there is no "business logic" here
  */
 
-import { Request, Response } from 'express'
+import { FastifyRequest, FastifyReply } from 'fastify'
 import { ShortenURLRequest, Hash } from '../models'
 import { shortenURLController, getOriginalURLController, getStatsController } from './controllers'
 import { isValidURL } from '../helpers/utils'
 import { httpErrorBadRequest, httpErrorNotFound, httpInternalServerError } from '../helpers/expressHelpers'
+import { config } from '../config'
 
-function checkHealth(_: Request, res: Response) {
+type GetURLRequest = FastifyRequest<{
+    Params: { id: string }
+}>
+
+function checkHealth(_: FastifyRequest, res: FastifyReply) {
     res.send('OK')
 }
 
-async function shortenURL(req: Request, res: Response) {
+async function shortenURL(req: FastifyRequest, res: FastifyReply) {
     const inp = req.body as ShortenURLRequest
     if (!inp.url) {
         return httpErrorBadRequest(res, "Missing required field 'url'")
@@ -21,16 +26,16 @@ async function shortenURL(req: Request, res: Response) {
         return httpErrorBadRequest(res, 'Invalid URL')
     }
     try {
-        const appURL = req.app.get('APP_URL') as string
+        const appURL = `${config.HOST}:${config.PORT}`
         const shortenedURLResp = await shortenURLController(inp.url, appURL)
-        return res.json(shortenedURLResp)
+        return res.send(shortenedURLResp)
     } catch (err) {
         console.error(err)
         return httpInternalServerError(res)
     }
 }
 
-async function getOriginalURL(req: Request, res: Response) {
+async function getOriginalURL(req: GetURLRequest, res: FastifyReply) {
     const hash = req.params.id as Hash
 
     try {
@@ -45,7 +50,7 @@ async function getOriginalURL(req: Request, res: Response) {
     }
 }
 
-async function getURLStats(req: Request, res: Response) {
+async function getURLStats(req: GetURLRequest, res: FastifyReply) {
     const hash = req.params.id as Hash
 
     try {
@@ -53,7 +58,7 @@ async function getURLStats(req: Request, res: Response) {
         if (stats === null) {
             return httpErrorNotFound(res)
         }
-        return res.json(stats)
+        return res.send(stats)
     } catch (err) {
         console.error(err)
         return httpInternalServerError(res)

@@ -23,7 +23,9 @@ import fastify from 'fastify'
 import { router } from './routes'
 
 const server = fastify({
-    logger: true,
+    logger: {
+        level: 'error',
+    },
 })
 
 server.register(router)

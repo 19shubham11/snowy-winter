@@ -9,7 +9,7 @@ import * as store from '../store/datastore'
 const STAT_PREFIX = 'STATS'
 const INIT_STATS = 0
 
-async function shortenURLController(inputURL: string, appUrl: string): Promise<ShortenURLResponse> {
+export async function shortenURLController(inputURL: string, appUrl: string): Promise<ShortenURLResponse> {
     try {
         // set hash
         const urlHash = hash.createUniqueHash()
@@ -29,7 +29,7 @@ async function shortenURLController(inputURL: string, appUrl: string): Promise<S
     }
 }
 
-async function getOriginalURLController(inpHash: Hash): Promise<string | null> {
+export async function getOriginalURLController(inpHash: Hash): Promise<string | null> {
     try {
         const url = await store.getValue(inpHash)
         if (url !== null) {
@@ -43,7 +43,7 @@ async function getOriginalURLController(inpHash: Hash): Promise<string | null> {
     }
 }
 
-async function getStatsController(inpHash: Hash): Promise<URLStatsResponse | null> {
+export async function getStatsController(inpHash: Hash): Promise<URLStatsResponse | null> {
     try {
         const statKey = getStatKey(inpHash)
         const url = await store.getValue(inpHash)
@@ -63,5 +63,3 @@ async function getStatsController(inpHash: Hash): Promise<URLStatsResponse | nul
 function getStatKey(urlHash: Hash): string {
     return `${STAT_PREFIX}_${urlHash}`
 }
-
-export { shortenURLController, getOriginalURLController, getStatsController }

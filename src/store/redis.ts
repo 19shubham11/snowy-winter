@@ -1,8 +1,9 @@
 import { Hash } from '../models'
 import { getRedisInstance } from './setup'
+
 const redis = getRedisInstance()
 
-function set(key: Hash, value: string): Promise<'OK'> {
+export function set(key: Hash, value: string): Promise<'OK'> {
     return new Promise((resolve, reject) => {
         redis.set(key, value, (error, result) => {
             if (error) {
@@ -14,7 +15,7 @@ function set(key: Hash, value: string): Promise<'OK'> {
     })
 }
 
-function get(key: Hash): Promise<string | null> {
+export function get(key: Hash): Promise<string | null> {
     return new Promise((resolve, reject) => {
         redis.get(key, (error, result) => {
             if (error) {
@@ -26,7 +27,7 @@ function get(key: Hash): Promise<string | null> {
     })
 }
 
-function incr(key: string): Promise<number> {
+export function incr(key: string): Promise<number> {
     return new Promise((resolve, reject) => {
         redis.incr(key, (error, result) => {
             if (error) {
@@ -37,5 +38,3 @@ function incr(key: string): Promise<number> {
         })
     })
 }
-
-export { get, set, incr }

@@ -1,5 +1,6 @@
-import * as hash from '../../src/helpers/hash'
 import assert from 'assert'
+
+import * as hash from '../../src/helpers/hash'
 
 describe('createUniqueHash', () => {
     it('Should return string output of length 8', () => {

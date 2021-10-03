@@ -1,6 +1,7 @@
-import { redis } from '../redis.setup'
 import fastify from 'fastify'
 import assert from 'assert'
+
+import { redis } from '../redis.setup'
 import { router } from '../../src/server/routes'
 import { ShortenURLRequest, ShortenURLResponse, URLStatsResponse } from '../../src/models'
 import * as store from '../../src/store/datastore'

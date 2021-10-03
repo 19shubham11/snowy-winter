@@ -4,16 +4,14 @@
  */
 import * as db from './redis'
 
-function saveKeyAndValue(key: string, value: string): Promise<'OK'> {
+export function saveKeyAndValue(key: string, value: string): Promise<'OK'> {
     return db.set(key, value)
 }
 
-function getValue(key: string): Promise<string | null> {
+export function getValue(key: string): Promise<string | null> {
     return db.get(key)
 }
 
-function incrementValue(key: string): Promise<number> {
+export function incrementValue(key: string): Promise<number> {
     return db.incr(key)
 }
-
-export { saveKeyAndValue, getValue, incrementValue }

@@ -1,5 +1,6 @@
-import * as utils from '../../src/helpers/utils'
 import assert from 'assert'
+
+import * as utils from '../../src/helpers/utils'
 
 describe('isValidURL', () => {
     it('Should return true for a valid url', () => {

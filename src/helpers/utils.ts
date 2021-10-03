@@ -1,4 +1,4 @@
-function isValidURL(inp: string): boolean {
+export function isValidURL(inp: string): boolean {
     try {
         const url = new URL(inp)
         return true
@@ -6,5 +6,3 @@ function isValidURL(inp: string): boolean {
         return false
     }
 }
-
-export { isValidURL }

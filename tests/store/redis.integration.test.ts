@@ -1,5 +1,6 @@
-import { redis } from '../redis.setup'
 import assert from 'assert'
+
+import { redis } from '../redis.setup'
 
 afterAll((done) => {
     redis.flushdb()
@@ -50,7 +51,7 @@ describe('Redis Integration tests', () => {
             const value = 'Hello'
 
             await db.set(key, value)
-            await assert.rejects(db.incr(key), (err) => {
+            await assert.rejects(db.incr(key), (err: Error) => {
                 assert.match(err.message, /not an integer/)
                 return true
             })

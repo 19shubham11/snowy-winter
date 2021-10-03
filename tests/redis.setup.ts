@@ -10,6 +10,4 @@ const conf: RedisConfig = {
 }
 
 setupRedisInstance(conf)
-const redis = getRedisInstance()
-
-export { redis }
+export const redis = getRedisInstance()

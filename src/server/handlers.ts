@@ -13,11 +13,11 @@ type GetURLRequest = FastifyRequest<{
     Params: { id: string }
 }>
 
-function checkHealth(_: FastifyRequest, res: FastifyReply) {
+export function checkHealth(_: FastifyRequest, res: FastifyReply) {
     res.send('OK')
 }
 
-async function shortenURL(req: FastifyRequest, res: FastifyReply) {
+export async function shortenURL(req: FastifyRequest, res: FastifyReply) {
     const inp = req.body as ShortenURLRequest
     if (!inp.url) {
         return httpErrorBadRequest(res, "Missing required field 'url'")
@@ -35,7 +35,7 @@ async function shortenURL(req: FastifyRequest, res: FastifyReply) {
     }
 }
 
-async function getOriginalURL(req: GetURLRequest, res: FastifyReply) {
+export async function getOriginalURL(req: GetURLRequest, res: FastifyReply) {
     const hash = req.params.id as Hash
 
     try {
@@ -50,7 +50,7 @@ async function getOriginalURL(req: GetURLRequest, res: FastifyReply) {
     }
 }
 
-async function getURLStats(req: GetURLRequest, res: FastifyReply) {
+export async function getURLStats(req: GetURLRequest, res: FastifyReply) {
     const hash = req.params.id as Hash
 
     try {
@@ -64,5 +64,3 @@ async function getURLStats(req: GetURLRequest, res: FastifyReply) {
         return httpInternalServerError(res)
     }
 }
-
-export { checkHealth, shortenURL, getOriginalURL, getURLStats }

@@ -58,4 +58,37 @@ describe('Redis Integration tests', () => {
             })
         })
     })
+
+    describe('MSET', () => {
+        it('Should set multiple keys', async () => {
+            const set = [
+                { key: 'k1', value: 'v1' },
+                { key: 'k2', value: 'v2' },
+                { key: 'k3', value: 'v3' },
+                { key: 'k4', value: 'v4' },
+            ]
+
+            const res = await db.mset(set)
+            assert.strictEqual(res, 'OK')
+        })
+    })
+
+    describe('MGET', () => {
+        it('Should get multiple keys', async () => {
+            const set = [
+                { key: 'k1', value: 'v1' },
+                { key: 'k2', value: 'v2' },
+                { key: 'k3', value: 'v3' },
+                { key: 'k4', value: 'v4' },
+            ]
+            await db.mset(set)
+
+            const keys = set.map((p) => p.key)
+            const values = set.map((p) => p.value)
+
+            const res = await db.mget(keys)
+
+            assert.deepStrictEqual(res, values)
+        })
+    })
 })

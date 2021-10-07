@@ -19,7 +19,7 @@ The structure of the project is pretty much straight forward and intuitive. All 
 
 - **helpers/** contain all application specific helpers. In this case [createUniqueHash](/src/helpers/hash.ts)
 
-- **store/** contains setup and implementation details for external database. It is further divided into [datastore](/src/store/datastore.ts), [redis](/src/store/redis.ts) and [setup](/src/store/setup.ts). Datastore acts as the API for the rest of the application, so that the database details are abstracted, the main db logic is in `redis.ts`, and the setup details are in `setup.ts`. Another advantage of this design is that if another database has to be used in the future, that can be done without affecting the application code, the function signature for `datastore.ts` would remain the same in that scenario, only the underlying db implementation would change.
+- **store/** contains setup and implementation details for external database, in this case `redis`
 
 The test are broken down similarly and can be found under `tests/`. 
 

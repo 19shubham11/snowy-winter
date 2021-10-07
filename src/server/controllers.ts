@@ -5,7 +5,6 @@
 import { Redis } from '../store/redis'
 import * as hash from '../helpers/hash'
 import { ShortenURLResponse, Hash, URLStatsResponse } from '../models'
-import * as ds from '../store/datastore'
 
 const STAT_PREFIX = 'STATS'
 const INIT_STATS = 0
@@ -17,17 +16,15 @@ export interface Controller {
 }
 
 export function controller(redis: Redis): Controller {
-    const store = ds.store(redis)
-
     async function shortenURLController(inputURL: string, appUrl: string): Promise<ShortenURLResponse> {
         try {
             // set hash
             const urlHash = hash.createUniqueHash()
-            await store.saveKeyAndValue(urlHash, inputURL)
+            await redis.set(urlHash, inputURL)
 
             // set initial stats
             const statKey = getStatKey(urlHash)
-            await store.saveKeyAndValue(statKey, `${INIT_STATS}`)
+            await redis.set(statKey, `${INIT_STATS}`)
 
             const shortenedURL = `${appUrl}/${urlHash}`
             const shortenURLResponse: ShortenURLResponse = {
@@ -42,11 +39,11 @@ export function controller(redis: Redis): Controller {
 
     async function getOriginalURLController(inpHash: Hash): Promise<string | null> {
         try {
-            const url = await store.getValue(inpHash)
+            const url = await redis.get(inpHash)
             if (url !== null) {
                 // increment stats
                 const statKey = getStatKey(inpHash)
-                await store.incrementValue(statKey)
+                await redis.incr(statKey)
             }
 
             return url
@@ -58,8 +55,8 @@ export function controller(redis: Redis): Controller {
     async function getStatsController(inpHash: Hash): Promise<URLStatsResponse | null> {
         try {
             const statKey = getStatKey(inpHash)
-            const url = await store.getValue(inpHash)
-            const hits = await store.getValue(statKey)
+            const url = await redis.get(inpHash)
+            const hits = await redis.get(statKey)
 
             if (url === null || hits === null) {
                 return null

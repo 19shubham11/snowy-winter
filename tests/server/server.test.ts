@@ -6,17 +6,15 @@ import { redisInstance } from '../redis.setup'
 import { getRoutes } from '../../src/server/routes'
 
 import { ShortenURLRequest, ShortenURLResponse, URLStatsResponse } from '../../src/models'
-import { store } from '../../src/store/datastore'
-import { mocked } from 'ts-jest/utils'
-
-const server = fastify()
-
-const redis = api(redisInstance)
-const router = getRoutes(redis)
-
-server.register(router)
 
 describe('API Integration Tests', () => {
+    const server = fastify()
+
+    const redis = api(redisInstance)
+    const router = getRoutes(redis)
+
+    server.register(router)
+
     afterAll((done) => {
         redisInstance.flushdb()
         redisInstance.quit()

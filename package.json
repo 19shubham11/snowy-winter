@@ -6,9 +6,8 @@
   "scripts": {
     "format": "prettier 'src/**/*.ts' 'tests/**/*.ts' --write",
     "build": "tsc --p tsconfig.json",
-    "lint": "tslint -c tslint.json -p tsconfig.json",
     "start": "npm run build && node .",
-    "test": "npm run lint && jest --verbose --coverage"
+    "test": "jest --verbose --coverage"
   },
   "author": "Shubham Chaturvedi",
   "license": "ISC",
@@ -20,7 +19,6 @@
     "prettier": "^2.4.1",
     "supertest": "~6.1.6",
     "ts-jest": "^27.0.5",
-    "tslint": "^6.1.3",
     "typescript": "^4.4.3"
   },
   "dependencies": {

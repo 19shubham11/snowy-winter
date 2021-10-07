@@ -72,7 +72,7 @@ describe('API Integration Tests', () => {
         })
 
         it('Should return 500 if db returns an error', async () => {
-            jest.spyOn(redis, 'set').mockImplementation(() => {
+            jest.spyOn(redis, 'mset').mockImplementation(() => {
                 return Promise.reject('nope')
             })
 
@@ -186,7 +186,7 @@ describe('API Integration Tests', () => {
         })
 
         it('Should return 500 if db returns an error', async () => {
-            jest.spyOn(redis, 'get').mockImplementation(() => {
+            jest.spyOn(redis, 'mget').mockImplementation(() => {
                 return Promise.reject('nope')
             })
 

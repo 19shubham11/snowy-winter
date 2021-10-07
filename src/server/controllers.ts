@@ -18,13 +18,16 @@ export interface Controller {
 export function controller(redis: Redis, redirectURL: string): Controller {
     async function shortenURLController(inputURL: string): Promise<ShortenURLResponse> {
         try {
-            // set hash
+            // set hash and statsKey
             const urlHash = hash.createUniqueHash()
-            await redis.set(urlHash, inputURL)
-
-            // set initial stats
             const statKey = getStatKey(urlHash)
-            await redis.set(statKey, `${INIT_STATS}`)
+
+            const redisSet = [
+                { key: urlHash, value: inputURL },
+                { key: statKey, value: `${INIT_STATS}` },
+            ]
+
+            await redis.mset(redisSet)
 
             const shortenedURL = `${redirectURL}/${urlHash}`
             const shortenURLResponse: ShortenURLResponse = {
@@ -55,8 +58,7 @@ export function controller(redis: Redis, redirectURL: string): Controller {
     async function getStatsController(inpHash: Hash): Promise<URLStatsResponse | null> {
         try {
             const statKey = getStatKey(inpHash)
-            const url = await redis.get(inpHash)
-            const hits = await redis.get(statKey)
+            const [url, hits] = await redis.mget([inpHash, statKey])
 
             if (url === null || hits === null) {
                 return null

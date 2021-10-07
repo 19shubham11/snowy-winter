@@ -16,7 +16,7 @@ redisClient.on('end', () => {
     process.exit(1)
 })
 redisClient.on('connect', () => {
-    console.error('Connected to Redis!')
+    console.info('Connected to Redis!')
 })
 
 const appURL = `${config.HOST}:${config.PORT}`

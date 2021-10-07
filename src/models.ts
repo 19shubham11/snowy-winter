@@ -1,16 +1,14 @@
-type Hash = string
+export type Hash = string
 
-interface ShortenURLRequest {
+export interface ShortenURLRequest {
     url: string
 }
 
-interface ShortenURLResponse {
+export interface ShortenURLResponse {
     shortenedURL: string
 }
 
-interface URLStatsResponse {
+export interface URLStatsResponse {
     url: string
     hits: number
 }
-
-export { Hash, ShortenURLRequest, ShortenURLResponse, URLStatsResponse }

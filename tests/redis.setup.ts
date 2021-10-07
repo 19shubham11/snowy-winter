@@ -1,5 +1,5 @@
 import { RedisConfig } from '../src/config'
-import { getRedisInstance, setupRedisInstance } from '../src/store/setup'
+import { setupRedisInstance } from '../src/store/setup'
 
 const conf: RedisConfig = {
     user: 'default',
@@ -9,5 +9,4 @@ const conf: RedisConfig = {
     db: 2,
 }
 
-setupRedisInstance(conf)
-export const redis = getRedisInstance()
+export const redisInstance = setupRedisInstance(conf)

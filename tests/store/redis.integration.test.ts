@@ -1,16 +1,17 @@
 import assert from 'assert'
 
-import { redis } from '../redis.setup'
+import { redisInstance } from '../redis.setup'
+import { redis } from '../../src/store/redis'
 
 afterAll((done) => {
-    redis.flushdb()
-    redis.quit()
+    redisInstance.flushdb()
+    redisInstance.quit()
     done()
 })
 
-import * as db from '../../src/store/redis'
-
 describe('Redis Integration tests', () => {
+    const db = redis(redisInstance)
+
     describe('SET', () => {
         it('Should return "OK" when setting a key', async () => {
             const val = await db.set('key1', 'http://www.google.com')

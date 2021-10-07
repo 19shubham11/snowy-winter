@@ -1,7 +1,7 @@
 import assert from 'assert'
 
 import { redisInstance } from '../redis.setup'
-import { redis } from '../../src/store/redis'
+import * as redis from '../../src/store/redis'
 
 afterAll((done) => {
     redisInstance.flushdb()
@@ -10,7 +10,7 @@ afterAll((done) => {
 })
 
 describe('Redis Integration tests', () => {
-    const db = redis(redisInstance)
+    const db = redis.api(redisInstance)
 
     describe('SET', () => {
         it('Should return "OK" when setting a key', async () => {

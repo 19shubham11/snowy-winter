@@ -4,7 +4,7 @@
 
 import { FastifyRequest, FastifyReply } from 'fastify'
 import { ShortenURLRequest, Hash } from '../models'
-import { shortenURLController, getOriginalURLController, getStatsController } from './controllers'
+import { Controller } from './controllers'
 import { isValidURL } from '../helpers/utils'
 import { httpErrorBadRequest, httpErrorNotFound, httpInternalServerError } from '../helpers/expressHelpers'
 import { config } from '../config'
@@ -13,54 +13,70 @@ type GetURLRequest = FastifyRequest<{
     Params: { id: string }
 }>
 
-export function checkHealth(_: FastifyRequest, res: FastifyReply) {
-    res.send('OK')
+export interface Handler {
+    checkHealth(_: FastifyRequest, res: FastifyReply): void
+    shortenURL(req: FastifyRequest, res: FastifyReply): Promise<void>
+    getOriginalURL(req: GetURLRequest, res: FastifyReply): Promise<void>
+    getURLStats(req: GetURLRequest, res: FastifyReply): Promise<void>
 }
 
-export async function shortenURL(req: FastifyRequest, res: FastifyReply) {
-    const inp = req.body as ShortenURLRequest
-    if (!inp.url) {
-        return httpErrorBadRequest(res, "Missing required field 'url'")
+export function handler(ctrl: Controller): Handler {
+    function checkHealth(_: FastifyRequest, res: FastifyReply) {
+        res.send('OK')
     }
-    if (!isValidURL(inp.url)) {
-        return httpErrorBadRequest(res, 'Invalid URL')
-    }
-    try {
-        const appURL = `${config.HOST}:${config.PORT}`
-        const shortenedURLResp = await shortenURLController(inp.url, appURL)
-        return res.send(shortenedURLResp)
-    } catch (err) {
-        console.error(err)
-        return httpInternalServerError(res)
-    }
-}
 
-export async function getOriginalURL(req: GetURLRequest, res: FastifyReply) {
-    const hash = req.params.id as Hash
-
-    try {
-        const redirectUrl = await getOriginalURLController(hash)
-        if (redirectUrl === null) {
-            return httpErrorNotFound(res)
+    async function shortenURL(req: FastifyRequest, res: FastifyReply) {
+        const inp = req.body as ShortenURLRequest
+        if (!inp.url) {
+            return httpErrorBadRequest(res, "Missing required field 'url'")
         }
-        res.redirect(redirectUrl)
-    } catch (err) {
-        console.error(err)
-        return httpInternalServerError(res)
-    }
-}
-
-export async function getURLStats(req: GetURLRequest, res: FastifyReply) {
-    const hash = req.params.id as Hash
-
-    try {
-        const stats = await getStatsController(hash)
-        if (stats === null) {
-            return httpErrorNotFound(res)
+        if (!isValidURL(inp.url)) {
+            return httpErrorBadRequest(res, 'Invalid URL')
         }
-        return res.send(stats)
-    } catch (err) {
-        console.error(err)
-        return httpInternalServerError(res)
+        try {
+            const appURL = `${config.HOST}:${config.PORT}`
+            const shortenedURLResp = await ctrl.shortenURLController(inp.url, appURL)
+            return res.send(shortenedURLResp)
+        } catch (err) {
+            console.error(err)
+            return httpInternalServerError(res)
+        }
+    }
+
+    async function getOriginalURL(req: GetURLRequest, res: FastifyReply) {
+        const hash = req.params.id as Hash
+
+        try {
+            const redirectUrl = await ctrl.getOriginalURLController(hash)
+            if (redirectUrl === null) {
+                return httpErrorNotFound(res)
+            }
+            res.redirect(redirectUrl)
+        } catch (err) {
+            console.error(err)
+            return httpInternalServerError(res)
+        }
+    }
+
+    async function getURLStats(req: GetURLRequest, res: FastifyReply) {
+        const hash = req.params.id as Hash
+
+        try {
+            const stats = await ctrl.getStatsController(hash)
+            if (stats === null) {
+                return httpErrorNotFound(res)
+            }
+            return res.send(stats)
+        } catch (err) {
+            console.error(err)
+            return httpInternalServerError(res)
+        }
+    }
+
+    return {
+        checkHealth,
+        shortenURL,
+        getOriginalURL,
+        getURLStats,
     }
 }

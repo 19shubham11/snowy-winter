@@ -1,18 +1,25 @@
 import fastify from 'fastify'
 import assert from 'assert'
 
-import { redis } from '../redis.setup'
-import { router } from '../../src/server/routes'
+import { api } from '../../src/store/redis'
+import { redisInstance } from '../redis.setup'
+import { getRoutes } from '../../src/server/routes'
+
 import { ShortenURLRequest, ShortenURLResponse, URLStatsResponse } from '../../src/models'
-import * as store from '../../src/store/datastore'
+import { store } from '../../src/store/datastore'
+import { mocked } from 'ts-jest/utils'
 
 const server = fastify()
+
+const redis = api(redisInstance)
+const router = getRoutes(redis)
+
 server.register(router)
 
 describe('API Integration Tests', () => {
     afterAll((done) => {
-        redis.flushdb()
-        redis.quit()
+        redisInstance.flushdb()
+        redisInstance.quit()
         done()
     })
 
@@ -65,7 +72,7 @@ describe('API Integration Tests', () => {
         })
 
         it('Should return 500 if db returns an error', async () => {
-            jest.spyOn(store, 'saveKeyAndValue').mockImplementation(() => {
+            jest.spyOn(redis, 'set').mockImplementation(() => {
                 return Promise.reject('nope')
             })
 
@@ -102,7 +109,7 @@ describe('API Integration Tests', () => {
         })
 
         it('Should return 500 if db returns an error', async () => {
-            jest.spyOn(store, 'getValue').mockImplementation(() => {
+            jest.spyOn(redis, 'get').mockImplementation(() => {
                 return Promise.reject('nope')
             })
 
@@ -179,9 +186,10 @@ describe('API Integration Tests', () => {
         })
 
         it('Should return 500 if db returns an error', async () => {
-            jest.spyOn(store, 'getValue').mockImplementation(() => {
+            jest.spyOn(redis, 'get').mockImplementation(() => {
                 return Promise.reject('nope')
             })
+
             const res = await server.inject().get(`/something/stats`)
 
             assert.deepStrictEqual(res.statusCode, 500)

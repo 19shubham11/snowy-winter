@@ -7,7 +7,6 @@ import { ShortenURLRequest, Hash } from '../models'
 import { Controller } from './controllers'
 import { isValidURL } from '../helpers/utils'
 import { httpErrorBadRequest, httpErrorNotFound, httpInternalServerError } from '../helpers/expressHelpers'
-import { config } from '../config'
 
 type GetURLRequest = FastifyRequest<{
     Params: { id: string }
@@ -34,8 +33,7 @@ export function handler(ctrl: Controller): Handler {
             return httpErrorBadRequest(res, 'Invalid URL')
         }
         try {
-            const appURL = `${config.HOST}:${config.PORT}`
-            const shortenedURLResp = await ctrl.shortenURLController(inp.url, appURL)
+            const shortenedURLResp = await ctrl.shortenURLController(inp.url)
             return res.send(shortenedURLResp)
         } catch (err) {
             console.error(err)

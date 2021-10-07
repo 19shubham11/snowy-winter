@@ -10,13 +10,13 @@ const STAT_PREFIX = 'STATS'
 const INIT_STATS = 0
 
 export interface Controller {
-    shortenURLController(inputURL: string, appUrl: string): Promise<ShortenURLResponse>
+    shortenURLController(inputURL: string): Promise<ShortenURLResponse>
     getOriginalURLController(inpHash: Hash): Promise<string | null>
     getStatsController(inpHash: Hash): Promise<URLStatsResponse | null>
 }
 
-export function controller(redis: Redis): Controller {
-    async function shortenURLController(inputURL: string, appUrl: string): Promise<ShortenURLResponse> {
+export function controller(redis: Redis, redirectURL: string): Controller {
+    async function shortenURLController(inputURL: string): Promise<ShortenURLResponse> {
         try {
             // set hash
             const urlHash = hash.createUniqueHash()
@@ -26,7 +26,7 @@ export function controller(redis: Redis): Controller {
             const statKey = getStatKey(urlHash)
             await redis.set(statKey, `${INIT_STATS}`)
 
-            const shortenedURL = `${appUrl}/${urlHash}`
+            const shortenedURL = `${redirectURL}/${urlHash}`
             const shortenURLResponse: ShortenURLResponse = {
                 shortenedURL,
             }

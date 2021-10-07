@@ -8,11 +8,12 @@ import { getRoutes } from '../../src/server/routes'
 import { ShortenURLRequest, ShortenURLResponse, URLStatsResponse } from '../../src/models'
 
 describe('API Integration Tests', () => {
-    const server = fastify()
+    const redirectURL = '/redirectHere'
 
     const redis = api(redisInstance)
-    const router = getRoutes(redis)
+    const router = getRoutes(redis, redirectURL)
 
+    const server = fastify()
     server.register(router)
 
     afterAll((done) => {
@@ -49,6 +50,7 @@ describe('API Integration Tests', () => {
 
             assert.deepStrictEqual(statusCode, 200)
             assert(resp.shortenedURL)
+            assert.match(resp.shortenedURL, /redirectHere/)
         })
 
         it('Should return 400 if the request body does not contain url key', async () => {

@@ -1,7 +1,7 @@
-import { RedisConfig } from '../src/config'
+import { Config } from '../src/config'
 import { setupRedisInstance } from '../src/store/setup'
 
-const conf: RedisConfig = {
+const redisConf = {
     user: 'default',
     port: 6379,
     host: 'localhost',
@@ -9,4 +9,10 @@ const conf: RedisConfig = {
     db: 2,
 }
 
-export const redisInstance = setupRedisInstance(conf)
+const config: Config = {
+    PORT: 9090,
+    HOST: 'localhost',
+    redis: redisConf,
+}
+
+export const redisInstance = setupRedisInstance(config)

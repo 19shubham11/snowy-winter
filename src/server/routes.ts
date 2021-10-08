@@ -4,10 +4,6 @@ import * as handlers from './handlers'
 import * as controllers from './controllers'
 import { Redis } from '../store/redis'
 
-/**
- * Routes just pass on the requests to the appropriate handlers
- */
-
 export function getRoutes(redis: Redis, redirectURL: string) {
     const ctrl = controllers.controller(redis, redirectURL)
     const handler = handlers.handler(ctrl)

@@ -1,7 +1,3 @@
-/**
- * Controllers contain the main logic for the application
- */
-
 import { Redis } from '../store/redis'
 import * as hash from '../helpers/hash'
 import { ShortenURLResponse, Hash, URLStatsResponse } from '../models'

@@ -1,7 +1,3 @@
-/**
- * Handlers are responsible for inp/out validation, there is no "business logic" here
- */
-
 import { FastifyRequest, FastifyReply } from 'fastify'
 import { ShortenURLRequest, Hash } from '../models'
 import { Controller } from './controllers'

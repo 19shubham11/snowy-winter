@@ -1,12 +1,12 @@
+import fastify from 'fastify'
+
 import { config } from '../config'
 import { setupRedisInstance } from '../store/setup'
-
-import fastify from 'fastify'
 import { getRoutes } from './routes'
 import * as redis from '../store/redis'
 
 // redis setup
-const redisClient = setupRedisInstance(config.redis)
+const redisClient = setupRedisInstance(config)
 
 redisClient.on('error', (err) => {
     console.error('Redis Error!', err)

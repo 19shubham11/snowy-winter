@@ -1,4 +1,4 @@
-export interface RedisConfig {
+interface RedisConfig {
     user: string
     port: number
     host: string
@@ -6,7 +6,7 @@ export interface RedisConfig {
     db: number
 }
 
-interface AppConfig {
+export interface Config {
     PORT: number
     HOST: string
     redis: RedisConfig
@@ -20,7 +20,7 @@ const redisConf: RedisConfig = {
     db: 0,
 }
 
-export const config: AppConfig = {
+export const config: Config = {
     PORT: 2001,
     HOST: '127.0.0.1',
     redis: redisConf,

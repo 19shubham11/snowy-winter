@@ -39,13 +39,11 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-    - name: Setup redis
-      run: docker run -d -p 6379:6379 redis redis-server --requirepass $REDIS_PASS
     - name: Install Dependencies
       run: npm ci
     - name: Build
       run: npm run build
     - name: Test
-      run: npm run test
+      run: docker run -d -p 6379:6379 redis redis-server --requirepass $REDIS_PASS && npm run test
     - name: Lint
       run: npm run lint

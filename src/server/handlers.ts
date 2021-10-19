@@ -13,7 +13,7 @@ export interface Handler {
     getURLStats(req: GetURLRequest, res: FastifyReply): Promise<void>
 }
 
-export function handler(ctrl: Controller): Handler {
+export function initHandler(ctrl: Controller): Handler {
     function checkHealth(_: FastifyRequest, res: FastifyReply) {
         res.send('OK')
     }

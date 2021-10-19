@@ -2,7 +2,7 @@ import fastify from 'fastify'
 
 import { config } from '../config'
 import { setupRedisInstance } from '../store/setup'
-import { getRoutes } from './routes'
+import { initRoutes } from './routes'
 import * as redis from '../store/redis'
 
 // redis setup
@@ -21,8 +21,8 @@ redisClient.on('connect', () => {
 
 const appURL = `${config.HOST}:${config.PORT}`
 
-const redisAPI = redis.api(redisClient)
-const router = getRoutes(redisAPI, appURL)
+const redisAPI = redis.initAPI(redisClient)
+const router = initRoutes(redisAPI, appURL)
 
 const server = fastify({
     logger: {

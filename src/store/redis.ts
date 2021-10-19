@@ -14,7 +14,7 @@ export interface Redis {
     mget(keys: string[]): Promise<string[]>
 }
 
-export function api(client: RedisClient): Redis {
+export function initAPI(client: RedisClient): Redis {
     function set(key: Hash, value: string): Promise<string> {
         return new Promise((resolve, reject) => {
             client.set(key, value, (err, res) => {

@@ -10,7 +10,7 @@ afterAll((done) => {
 })
 
 describe('Redis Integration tests', () => {
-    const db = redis.api(redisInstance)
+    const db = redis.initAPI(redisInstance)
 
     describe('SET', () => {
         it('Should return "OK" when setting a key', async () => {

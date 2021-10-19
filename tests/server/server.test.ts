@@ -1,17 +1,17 @@
 import fastify from 'fastify'
 import assert from 'assert'
 
-import { api } from '../../src/store/redis'
+import { initAPI } from '../../src/store/redis'
 import { redisInstance } from '../redis.setup'
-import { getRoutes } from '../../src/server/routes'
+import { initRoutes } from '../../src/server/routes'
 
 import { ShortenURLRequest, ShortenURLResponse, URLStatsResponse } from '../../src/models'
 
 describe('API Integration Tests', () => {
     const redirectURL = '/redirectHere'
 
-    const redis = api(redisInstance)
-    const router = getRoutes(redis, redirectURL)
+    const redis = initAPI(redisInstance)
+    const router = initRoutes(redis, redirectURL)
 
     const server = fastify()
     server.register(router)

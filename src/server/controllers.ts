@@ -11,7 +11,7 @@ export interface Controller {
     getStatsController(inpHash: Hash): Promise<URLStatsResponse | null>
 }
 
-export function controller(redis: Redis, redirectURL: string): Controller {
+export function initController(redis: Redis, redirectURL: string): Controller {
     async function shortenURLController(inputURL: string): Promise<ShortenURLResponse> {
         // set hash and statsKey
         const urlHash = hash.createUniqueHash()

@@ -4,9 +4,7 @@ import { Controller } from './controllers'
 import { isValidURL } from '../helpers/utils'
 import { httpErrorBadRequest, httpErrorNotFound, httpInternalServerError } from '../helpers/expressHelpers'
 
-type GetURLRequest = FastifyRequest<{
-    Params: { id: string }
-}>
+type GetURLRequest = FastifyRequest<{ Params: { id: string } }>
 
 export interface Handler {
     checkHealth(_: FastifyRequest, res: FastifyReply): void
@@ -25,9 +23,11 @@ export function handler(ctrl: Controller): Handler {
         if (!inp.url) {
             return httpErrorBadRequest(res, "Missing required field 'url'")
         }
+
         if (!isValidURL(inp.url)) {
             return httpErrorBadRequest(res, 'Invalid URL')
         }
+
         try {
             const shortenedURLResp = await ctrl.shortenURLController(inp.url)
             return res.send(shortenedURLResp)
@@ -38,13 +38,14 @@ export function handler(ctrl: Controller): Handler {
     }
 
     async function getOriginalURL(req: GetURLRequest, res: FastifyReply) {
-        const hash = req.params.id as Hash
+        const hash = req?.params?.id as Hash
 
         try {
             const redirectUrl = await ctrl.getOriginalURLController(hash)
             if (redirectUrl === null) {
                 return httpErrorNotFound(res)
             }
+
             res.redirect(redirectUrl)
         } catch (err) {
             console.error(err)
@@ -53,13 +54,14 @@ export function handler(ctrl: Controller): Handler {
     }
 
     async function getURLStats(req: GetURLRequest, res: FastifyReply) {
-        const hash = req.params.id as Hash
+        const hash = req?.params?.id as Hash
 
         try {
             const stats = await ctrl.getStatsController(hash)
             if (stats === null) {
                 return httpErrorNotFound(res)
             }
+
             return res.send(stats)
         } catch (err) {
             console.error(err)

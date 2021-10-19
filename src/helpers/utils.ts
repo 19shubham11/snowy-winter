@@ -1,6 +1,6 @@
 export function isValidURL(inp: string): boolean {
     try {
-        const url = new URL(inp)
+        new URL(inp)
         return true
     } catch (_) {
         return false

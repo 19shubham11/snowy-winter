@@ -39,11 +39,11 @@ More details can be found in the [Swagger](./swagger.yaml)
 
 ## Running locally
 
-This was developed on Node v14.15.1, but other LTS versions should also work fine.
+Requires Node.js v14.x
 
 In order to run this locally, make sure you have redis installed and running locally, also ensure that the redis user requires a password (the default user 'default' has no auth). Alternatively, a docker image for redis can be used, this is how I am using running the test in the CI. To get a redis instance with docker  - 
 ```
-docker run -d -p 6379:6379 redis redis-server --requirepass 'yourPassword' --port 6379
+docker run -d -p 6379:6379 redis redis-server --requirepass $REDIS_PASS --port 6379
 ```
 
 The following 4 environment variables are required for redis - `REDIS_PORT`, `REDIS_HOST`, `REDS_USER` and `REDIS_PASS`. If either of these are not set, the default values from the [config](/src/config.ts) are applied.

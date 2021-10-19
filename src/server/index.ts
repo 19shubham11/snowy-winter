@@ -7,7 +7,6 @@ import * as redis from '../store/redis'
 
 // redis setup
 const redisClient = setupRedisInstance(config)
-
 redisClient.on('error', (err) => {
     console.error('Redis Error!', err)
 })

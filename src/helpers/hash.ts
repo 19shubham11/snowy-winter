@@ -1,5 +1,6 @@
 import crypto from 'crypto'
-import { Hash } from '../models'
+
+export type Hash = string
 
 /**
  * createUniqueHash returns a unique string of length 8

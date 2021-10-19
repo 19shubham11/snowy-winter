@@ -1,5 +1,3 @@
-export type Hash = string
-
 export interface ShortenURLRequest {
     url: string
 }

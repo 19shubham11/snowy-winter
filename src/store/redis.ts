@@ -1,5 +1,4 @@
 import { RedisClient } from 'redis'
-import { Hash } from '../models'
 
 type RedisKeyValPair = {
     key: string
@@ -7,15 +6,15 @@ type RedisKeyValPair = {
 }
 
 export interface Redis {
-    set(key: Hash, value: string): Promise<string>
-    get(key: Hash): Promise<string | null>
+    set(key: string, value: string): Promise<string>
+    get(key: string): Promise<string | null>
     incr(key: string): Promise<number>
     mset(keys: RedisKeyValPair[]): Promise<boolean>
     mget(keys: string[]): Promise<string[]>
 }
 
 export function initAPI(client: RedisClient): Redis {
-    function set(key: Hash, value: string): Promise<string> {
+    function set(key: string, value: string): Promise<string> {
         return new Promise((resolve, reject) => {
             client.set(key, value, (err, res) => {
                 if (err) {
@@ -27,7 +26,7 @@ export function initAPI(client: RedisClient): Redis {
         })
     }
 
-    function get(key: Hash): Promise<string | null> {
+    function get(key: string): Promise<string | null> {
         return new Promise((resolve, reject) => {
             client.get(key, (err, res) => {
                 if (err) {

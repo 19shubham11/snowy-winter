@@ -1,18 +1,19 @@
 import { Redis } from '../store/redis'
 import * as hash from '../helpers/hash'
-import { ShortenURLResponse, Hash, URLStatsResponse } from '../models'
+import { ShortenURLResponse, URLStatsResponse } from './models'
+import { Hash } from '../helpers/hash'
 
 const STAT_PREFIX = 'STATS'
 const INIT_STATS = 0
 
 export interface Controller {
-    shortenURLController(inputURL: string): Promise<ShortenURLResponse>
-    getOriginalURLController(inpHash: Hash): Promise<string | null>
-    getStatsController(inpHash: Hash): Promise<URLStatsResponse | null>
+    shortenURL(inputURL: string): Promise<ShortenURLResponse>
+    getOriginalURL(inpHash: Hash): Promise<string | null>
+    getStats(inpHash: Hash): Promise<URLStatsResponse | null>
 }
 
 export function initController(redis: Redis, redirectURL: string): Controller {
-    async function shortenURLController(inputURL: string): Promise<ShortenURLResponse> {
+    async function shortenURL(inputURL: string): Promise<ShortenURLResponse> {
         // set hash and statsKey
         const urlHash = hash.createUniqueHash()
         const statKey = getStatKey(urlHash)
@@ -32,7 +33,7 @@ export function initController(redis: Redis, redirectURL: string): Controller {
         return shortenURLResponse
     }
 
-    async function getOriginalURLController(inpHash: Hash): Promise<string | null> {
+    async function getOriginalURL(inpHash: Hash): Promise<string | null> {
         const url = await redis.get(inpHash)
         if (url !== null) {
             // increment stats
@@ -43,7 +44,7 @@ export function initController(redis: Redis, redirectURL: string): Controller {
         return url
     }
 
-    async function getStatsController(inpHash: Hash): Promise<URLStatsResponse | null> {
+    async function getStats(inpHash: Hash): Promise<URLStatsResponse | null> {
         const statKey = getStatKey(inpHash)
         const [url, hits] = await redis.mget([inpHash, statKey])
 
@@ -58,9 +59,9 @@ export function initController(redis: Redis, redirectURL: string): Controller {
     }
 
     return {
-        shortenURLController,
-        getOriginalURLController,
-        getStatsController,
+        shortenURL,
+        getOriginalURL,
+        getStats,
     }
 }
 

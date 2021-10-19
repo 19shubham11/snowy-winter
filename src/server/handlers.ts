@@ -1,8 +1,9 @@
 import { FastifyRequest, FastifyReply } from 'fastify'
-import { ShortenURLRequest, Hash } from '../models'
+import { ShortenURLRequest } from './models'
 import { Controller } from './controllers'
+import { Hash } from '../helpers/hash'
 import { isValidURL } from '../helpers/utils'
-import { httpErrorBadRequest, httpErrorNotFound, httpInternalServerError } from '../helpers/expressHelpers'
+import * as httpHelpers from '../helpers/http'
 
 type GetURLRequest = FastifyRequest<{ Params: { id: string } }>
 
@@ -21,19 +22,19 @@ export function initHandler(ctrl: Controller): Handler {
     async function shortenURL(req: FastifyRequest, res: FastifyReply) {
         const inp = req.body as ShortenURLRequest
         if (!inp.url) {
-            return httpErrorBadRequest(res, "Missing required field 'url'")
+            return httpHelpers.httpErrorBadRequest(res, 'Missing required field "url"')
         }
 
         if (!isValidURL(inp.url)) {
-            return httpErrorBadRequest(res, 'Invalid URL')
+            return httpHelpers.httpErrorBadRequest(res, 'Invalid URL')
         }
 
         try {
-            const shortenedURLResp = await ctrl.shortenURLController(inp.url)
+            const shortenedURLResp = await ctrl.shortenURL(inp.url)
             return res.send(shortenedURLResp)
         } catch (err) {
             console.error(err)
-            return httpInternalServerError(res)
+            return httpHelpers.httpInternalServerError(res)
         }
     }
 
@@ -41,15 +42,15 @@ export function initHandler(ctrl: Controller): Handler {
         const hash = req?.params?.id as Hash
 
         try {
-            const redirectUrl = await ctrl.getOriginalURLController(hash)
+            const redirectUrl = await ctrl.getOriginalURL(hash)
             if (redirectUrl === null) {
-                return httpErrorNotFound(res)
+                return httpHelpers.httpErrorNotFound(res)
             }
 
             res.redirect(redirectUrl)
         } catch (err) {
             console.error(err)
-            return httpInternalServerError(res)
+            return httpHelpers.httpInternalServerError(res)
         }
     }
 
@@ -57,15 +58,15 @@ export function initHandler(ctrl: Controller): Handler {
         const hash = req?.params?.id as Hash
 
         try {
-            const stats = await ctrl.getStatsController(hash)
+            const stats = await ctrl.getStats(hash)
             if (stats === null) {
-                return httpErrorNotFound(res)
+                return httpHelpers.httpErrorNotFound(res)
             }
 
             return res.send(stats)
         } catch (err) {
             console.error(err)
-            return httpInternalServerError(res)
+            return httpHelpers.httpInternalServerError(res)
         }
     }
 

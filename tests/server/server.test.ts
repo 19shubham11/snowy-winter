@@ -5,7 +5,7 @@ import { initAPI } from '../../src/store/redis'
 import { redisInstance } from '../redis.setup'
 import { initRoutes } from '../../src/server/routes'
 
-import { ShortenURLRequest, ShortenURLResponse, URLStatsResponse } from '../../src/models'
+import { ShortenURLRequest, ShortenURLResponse, URLStatsResponse } from '../../src/server/models'
 
 describe('API Integration Tests', () => {
     const redirectURL = '/redirectHere'
